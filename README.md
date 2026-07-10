@@ -1,191 +1,159 @@
-# GB-EMU (WebAssembly Edition) 🎮
+# GB-EMU for Samsung Tizen TVs 🎮
 
-A **Game Boy (DMG)** emulator written from scratch in **C++17**, specifically compiled for the Web using **Emscripten (WebAssembly - WASM)**.
+A WebAssembly-powered port of **GB-EMU** — a Game Boy (DMG) emulator written from scratch in **C++17** — packaged as a Samsung Tizen TV application.
+This project uses [GB-EMU](https://github.com/dos-ise/GB-EMU_Tizen) compiled to WebAssembly via Emscripten and wraps it into a Tizen widget (`.wgt`) that runs directly on Samsung Smart TVs.
 
-> ⚠️ **WORK IN PROGRESS**: This project is under active development. It is incomplete and intended for **educational and testing purposes only**.
+> ⚠️ **WORK IN PROGRESS**: GB-EMU itself is under active development (incomplete CPU instruction set, MBC support, etc.) and intended for **educational and testing purposes only**.
 
 ---
 
-## 📂 Project Structure
+## Features
 
-```text
-GB-EMU/
-├── core/               # Emulator logic (CPU, MMU, Cartridge, Mappers)
-├── emc_main.cpp        # Main entry point for the Web version
-├── CMakeLists.txt      # Build configuration
-├── build.sh            # Automated build helper script
-└── roms/               # (Not included) User-provided ROM files
+- Runs entirely on the TV (no streaming required)
+- Ships with a bundled example ROM (`examples.gb`) that **loads automatically on startup** — no file browsing needed on a TV remote
+- Supports Samsung TV remote control mapping (D-Pad, OK, Back, colored buttons)
+- Supports standard gamepads/controllers (polled via the Gamepad API, D-Pad + left stick)
+- Optimized for Samsung Tizen TV devices
+- Simple installation using the Samsung Jellyfin Installer
+
+---
+
+## Installation
+
+### 1. Enable Developer Mode on your TV
+
+1. From the Apps screen, press `1 2 3 4 5` on the remote
+2. Toggle **Developer Mode = ON**
+3. Enter your PC's LAN IP in **Host PC IP**
+4. Reboot the TV
+
+### 2. Install the `.wgt`
+
+#### Install with Apps2Samsung
+The easiest way to install the generated `.wgt` file on your Samsung TV is by using Apps2Samsung:
+Download the latest version from [Apps2Samsung](https://github.com/Apps2Samsung/Apps2Samsung/releases/latest), choose Tizen Community as release and choose GBEmu.
+Launch GBEmu from the TV's app menu.
+
+---
+
+## Building
+
+### Requirements
+- Docker
+- Git
+
+### Quick Build
+
+Run the build script to compile and extract the `.wgt` file:
+
+**Windows:**
+```batch
+build.bat
 ```
 
-> 📌 **Note:** This repository does **NOT** include ROM files. You must provide your own.
+This will:
+1. Build the Docker image (Emscripten toolchain + GB-EMU compiled to WebAssembly + Tizen Studio CLI)
+2. Assemble the Tizen widget (`config.xml`, `icon.png` from `res/`, compiled `gb-emu.html/.js/.wasm`, bundled `roms/examples.gb`)
+3. Sign and package it as a `.wgt`
+4. Extract `GBEmu.wgt` to the current directory
 
----
+### Manual Build
 
-## ⚙️ Configuration (CRITICAL STEP)
-
-Because this project runs inside a browser sandbox, ROMs must be **manually injected into Emscripten’s virtual file system at build time**.
-
----
-
-### 🧱 Step 1: Prepare your ROM
-
-1. Create a folder named `roms` in the project root (if it doesn’t exist).
-2. Place your Game Boy ROM file inside it.
-
-Example:
-
-```text
-roms/
-└── your_game.gb
-```
-
----
-
-### 🗺️ Step 2: Modify `CMakeLists.txt` (Virtual Path Mapping)
-
-You must tell Emscripten:
-
-* Where the ROMs are located on your real machine
-* Where they should appear inside the browser
-
-Open `CMakeLists.txt` and locate the `target_link_options` section. Modify the preload line:
-
-```cmake
-"SHELL:--preload-file /YOUR/REAL/PATH/TO/roms@/roms"
-```
-
-#### Explanation:
-
-* **Left side (before `@`)** → Absolute path on your computer
-  Example:
-
-  ```text
-  /home/user/GB-EMU/roms
-  ```
-
-* **Right side (after `@`)** → Virtual path inside the browser
-  👉 **Keep this as** `/roms`
-
----
-
-### 🎮 Step 3: Modify `emc_main.cpp` (ROM Loading)
-
-Update the ROM path so it matches the filename inside the virtual file system:
-
-```cpp
-// Change "your_game.gb" to the actual ROM filename
-std::string romPath = "roms/your_game.gb";
-```
-
----
-
-## 🚀 Build Instructions
-
-### 🔧 Requirements
-
-* **Emscripten SDK (emsdk)** installed and activated in your terminal.
-
----
-
-### ✅ Option A: Automated Build (Recommended)
-
-The project includes a helper script that:
-
-* Cleans previous builds
-* Configures CMake with Emscripten
-* Compiles the project
-* Optionally launches a local web server
+If you prefer to build manually:
 
 ```bash
-# 1. Give execution permissions (only once)
-chmod +x build.sh
+# Build the Docker image
+docker build -t gbemu-tizen .
 
-# 2. Run the script
-./build.sh
-```
+# Create and start a temporary container
+docker create --name gbemu-tmp gbemu-tizen
+docker start gbemu-tmp
 
-At the end of the process, the script will ask whether you want to start the web server automatically.
+# Extract the .wgt file
+docker cp gbemu-tmp:/home/gbemu/GBEmu.wgt .
 
----
-
-### 🛠️ Option B: Manual Compilation
-
-If you prefer running each step manually:
-
-```bash
-# 1. Create a clean build directory
-rm -rf build_web
-mkdir -p build_web && cd build_web
-
-# 2. Configure with Emscripten
-emcmake cmake ..
-
-# 3. Compile
-emmake make -j$(nproc)
+# Clean up
+docker stop gbemu-tmp
+docker rm gbemu-tmp
 ```
 
 ---
 
-## ▶️ Running the Emulator
+## Using Your Own ROMs
 
-⚠️ **Do NOT open the generated HTML file directly**. You must use a local web server due to WASM/CORS security restrictions.
+By default, this build bundles the example ROM (`roms/examples.gb`), which loads automatically when the app starts — there's no in-app file picker experience worth using on a TV remote.
 
----
+To ship a different ROM:
 
-### 🔹 Via Script
+1. Replace `roms/examples.gb` with your own **legally obtained** Game Boy ROM (keep the filename `examples.gb`, or update the path in `src/index.html`'s `AUTO_ROM_PATH`)
+2. Run the build script again:
+   ```bash
+   build.bat
+   ```
+3. Install the new `GBEmu.wgt` file on your TV
 
-If you used `./build.sh`, simply type:
-
-```text
-s + Enter
-```
-
-when prompted.
-
----
-
-### 🔹 Manual
-
-#### Using `emrun` (Recommended)
-
-```bash
-emrun --no_browser --port 8888 gb-emu.html
-```
-
-#### Using Python
-
-```bash
-python3 -m http.server 8888
-```
+**Note:** This repository does not include any copyrighted ROMs. You must own a legitimate copy of any ROM you bundle.
 
 ---
 
-### 🌐 Access
+## Controls
 
-Open your browser at:
+### Samsung TV Remote
+| Button | Action |
+|--------|--------|
+| **Arrow Keys** | D-Pad (movement) |
+| **OK** | START |
+| **RED** | A |
+| **YELLOW** | SELECT |
+| **BACK** | B |
 
-```text
-http://localhost:8888/gb-emu.html
+### Controller
+| Button | Action |
+|--------|--------|
+| **D-Pad / Left Stick** | Movement |
+| **A** | A |
+| **B** | B |
+| **Select / Back** | SELECT |
+| **Start** | START |
+
+---
+
+## Project Structure
+
+```
+GB-EMU_Tizen/
+├── core/                # Emulator logic (CPU, MMU, Cartridge, Mappers)
+├── emc_main.cpp         # Main entry point for the Web version
+├── CMakeLists.txt       # Build configuration
+├── src/
+│   └── index.html       # Game shell: TV remote + gamepad support, auto ROM load
+├── res/
+│   ├── config.xml       # Tizen widget manifest
+│   └── icon.png         # App icon
+├── roms/
+│   └── examples.gb      # Bundled example ROM, loaded automatically on startup
+├── Dockerfile            # Build configuration
+└── build.bat             # Build script (Windows)
 ```
 
 ---
 
-## 🧩 Project Status
+## Project Status
 
 * [x] ROM loading via Virtual File System
 * [x] Basic emulator architecture
 * [x] WebAssembly compilation pipeline
-* [ ] Complete CPU instruction set — *In progress*
-* [x] PPU (Graphics & Rendering) 
+* [x] PPU (Graphics & Rendering)
 * [x] Timers & Interrupts
-* [ ] Joypad input handling — *In progress*
-* [ ] IMBC — *In progress*
-* [ ] Users can put their own ROMs in the UI.
-
+* [x] Samsung TV remote control mapping
+* [x] Gamepad/controller support
+* [ ] Complete CPU instruction set — *In progress*
+* [ ] Joypad input handling (core) — *In progress*
+* [ ] MBC support — *In progress*
 
 ---
 
-## 📚 Project Goals
+## Project Goals
 
 This project aims to:
 
@@ -193,24 +161,24 @@ This project aims to:
 * Explore **low-level emulation concepts**
 * Experiment with **C++ + WebAssembly**
 * Build a full emulator **from scratch**, without external emulation libraries
+* Bring homebrew/hobby emulation to Samsung Smart TVs
+
 ---
-## Example
- 
 
+## Credits
 
-https://github.com/user-attachments/assets/88e74923-9da6-4370-b4ec-90aa76692b20
+- **GB-EMU** — https://github.com/dos-ise/GB-EMU_Tizen
+- **Tizen Installer** - https://github.com/Jellyfin2Samsung/Samsung-Jellyfin-Installer
+- **Emscripten** - https://emscripten.org/
 
-
-💡 *Issues, pull requests, and feedback are welcome.*
 ---
 
 ## ⚖️ Legal Disclaimer
 
 This project is an **independent, unofficial emulator** developed for **educational purposes only**.
 
-- This repository **does NOT include** any copyrighted ROMs, BIOS files, or proprietary assets.
-- Users must provide their **own legally obtained Game Boy ROMs**.
-- Any ROM filenames shown in examples (e.g. `your_game.gb`) are **placeholders only**.
+- This repository does **NOT** include any copyrighted ROMs, BIOS files, or proprietary assets, aside from the bundled `examples.gb` test ROM.
+- Users must provide their own legally obtained Game Boy ROMs if they wish to bundle a different game.
 - This project is **not affiliated with, endorsed by, or associated with Nintendo**.
 
 All trademarks and registered trademarks are the property of their respective owners.

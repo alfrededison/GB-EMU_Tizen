@@ -723,6 +723,94 @@ registerProcessor('gb-processor', GBProcessor);
     }
 
     // ============================================================
+    // 6b. GAMEPAD / CONTROLLER SUPPORT
+    // Standard W3C gamepad mapping, same approach as doom-tizen's input.js:
+    // polled via rAF since the Gamepad API has no button-state events, only
+    // a live snapshot you have to diff yourself. Unlike Doom (which had to
+    // fake KeyboardEvents for SDL2), we can call pressBtn() directly.
+    // ============================================================
+    const GAMEPAD_BUTTON_MAP = {
+        0:  4, // A          -> GB A
+        1:  5, // B          -> GB B
+        8:  6, // Select/Back-> GB SELECT
+        9:  7, // Start      -> GB START
+        12: 2, // D-Pad up   -> GB UP
+        13: 3, // D-Pad down -> GB DOWN
+        14: 1, // D-Pad left -> GB LEFT
+        15: 0  // D-Pad right-> GB RIGHT
+    };
+
+    const STICK_DEADZONE = 0.35;
+    let gamepadPrevState  = {}; // gamepad index -> { [btnId]: boolean }
+    let gamepadPollHandle = null;
+
+    function pollGamepads() {
+        const pads = navigator.getGamepads ? navigator.getGamepads() : [];
+
+        for (let i = 0; i < pads.length; i++) {
+            const pad = pads[i];
+            if (!pad) continue;
+
+            const prev    = gamepadPrevState[i] || {};
+            const current = {};
+
+            for (const btnIndex in GAMEPAD_BUTTON_MAP) {
+                const gbId = GAMEPAD_BUTTON_MAP[btnIndex];
+                const btn  = pad.buttons[btnIndex];
+                current[gbId] = current[gbId] || (!!btn && (btn.pressed || btn.value > 0.5));
+            }
+
+            // Left stick as an analog fallback for movement, in case the
+            // D-pad reports as axes instead of buttons on some controllers.
+            const axisX = pad.axes[0] || 0;
+            const axisY = pad.axes[1] || 0;
+            if (axisY < -STICK_DEADZONE) current[2] = true; // UP
+            if (axisY >  STICK_DEADZONE) current[3] = true; // DOWN
+            if (axisX < -STICK_DEADZONE) current[1] = true; // LEFT
+            if (axisX >  STICK_DEADZONE) current[0] = true; // RIGHT
+
+            // Diff against the previous frame, only fire on transitions
+            for (let gbId = 0; gbId < 8; gbId++) {
+                const wasDown = !!prev[gbId];
+                const isDown  = !!current[gbId];
+                if (isDown !== wasDown) pressBtn(gbId, isDown);
+            }
+
+            gamepadPrevState[i] = current;
+        }
+
+        gamepadPollHandle = requestAnimationFrame(pollGamepads);
+    }
+
+    function initGamepad() {
+        console.log('[GAMEPAD] Setting up Gamepad API...');
+
+        if (!navigator.getGamepads) {
+            console.warn('[GAMEPAD] Gamepad API not available');
+            return;
+        }
+
+        window.addEventListener('gamepadconnected', e => {
+            console.log('[GAMEPAD] ✓ Connected:', e.gamepad.id, 'index', e.gamepad.index);
+            if (!gamepadPollHandle) gamepadPollHandle = requestAnimationFrame(pollGamepads);
+        });
+
+        window.addEventListener('gamepaddisconnected', e => {
+            console.log('[GAMEPAD] Disconnected:', e.gamepad.id);
+            delete gamepadPrevState[e.gamepad.index];
+        });
+
+        // Some browsers/TVs don't fire gamepadconnected reliably - start
+        // polling immediately as a fallback so an already-connected pad
+        // still works. pressBtn() no-ops safely before WASM is ready.
+        gamepadPollHandle = requestAnimationFrame(pollGamepads);
+    }
+
+    // Doesn't need to wait for WASM - pressBtn() already guards on
+    // Module._set_button being available.
+    initGamepad();
+
+    // ============================================================
     // 7. WASM MODULE & MAIN LOOP (sin cambios, solo +setupTouchInput)
     // ============================================================
     var Module = {
