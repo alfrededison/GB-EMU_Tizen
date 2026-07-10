@@ -321,7 +321,7 @@
         </div>
         
         <div class="controls" id="controls-hint">
-            <p>ARROWS | Z=A | X=B | ENTER=START | SHIFT=SEL</p>
+            <p>D-PAD/STICK | OK/PAD-START=START | RED/PAD-A=A | BACK/PAD-B=B | YELLOW/PAD-SEL=SEL</p>
         </div>
 
         <!-- CONTROLES TÁCTILES — solo visibles en mobile -->
@@ -402,10 +402,8 @@
         });
     }
 
-    if (isTizen) {
-        const hint = document.getElementById('controls-hint');
-        if (hint) hint.innerHTML = '<p>D-PAD | OK=START | RED=A | YELLOW=SEL | BACK=B</p>';
-    }
+    // Controls hint in the HTML already covers both remote and gamepad,
+    // no per-platform override needed anymore.
 
     // ============================================================
     // 1. GESTIÓN DE CARGA DE ROM
