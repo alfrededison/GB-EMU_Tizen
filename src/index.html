@@ -478,6 +478,97 @@
     }
 
     // ============================================================
+    // USB ROM LOADING (Tizen Filesystem API)
+    // Scans every mounted external (removable_*) storage for a .gb file
+    // and loads the first one found, in preference to the bundled example.
+    // Requires the filesystem.read/filesystem.write privileges in config.xml.
+    // ============================================================
+
+    // tizen.filesystem.listStorages() -> only EXTERNAL + MOUNTED (i.e. USB)
+    function listUsbStorages() {
+        return new Promise((resolve) => {
+            if (!(isTizen && tizen.filesystem)) { resolve([]); return; }
+            tizen.filesystem.listStorages(
+                storages => resolve(storages.filter(s => s.type === 'EXTERNAL' && s.state === 'MOUNTED')),
+                err => { console.warn('[USB] listStorages failed:', err); resolve([]); }
+            );
+        });
+    }
+
+    // Resolve a storage label (e.g. "removable_sda1") to its root File handle
+    function resolveStorage(label) {
+        return new Promise((resolve, reject) => {
+            tizen.filesystem.resolve(label, resolve, reject, 'r');
+        });
+    }
+
+    // List *.gb files directly under a directory handle
+    function listGbFiles(dirHandle) {
+        return new Promise((resolve, reject) => {
+            dirHandle.listFiles(
+                files => resolve(files.filter(f => f.isFile && /\.gb$/i.test(f.name))),
+                reject
+            );
+        });
+    }
+
+    // Read a File handle's full content as raw bytes.
+    // IMPORTANT: use readBytes(), not read() - read() returns a DOMString
+    // and will corrupt binary ROM data.
+    function readFileAsBytes(fileHandle) {
+        return new Promise((resolve, reject) => {
+            fileHandle.openStream('r', stream => {
+                try {
+                    const bytes = stream.readBytes(fileHandle.fileSize);
+                    stream.close();
+                    resolve(new Uint8Array(bytes));
+                } catch (err) {
+                    try { stream.close(); } catch (e) { /* ignore */ }
+                    reject(err);
+                }
+            }, reject);
+        });
+    }
+
+    // Scans all mounted USB storages and returns the first .gb File handle
+    // found, or null if none. Only looks at the top level of each drive -
+    // extend with recursion into subdirectories if you keep ROMs in folders.
+    async function findFirstUsbRom() {
+        const storages = await listUsbStorages();
+        for (const storage of storages) {
+            try {
+                const dir = await resolveStorage(storage.label);
+                const gbFiles = await listGbFiles(dir);
+                if (gbFiles.length > 0) {
+                    console.log('[USB] Found', gbFiles.length, 'ROM(s) on', storage.label, '- using', gbFiles[0].name);
+                    return gbFiles[0];
+                }
+            } catch (err) {
+                console.warn('[USB] Could not read storage', storage.label, err);
+            }
+        }
+        return null;
+    }
+
+    // Tries USB first, falls back to the bundled example ROM.
+    async function autoLoadRom() {
+        if (isTizen) {
+            try {
+                const usbRom = await findFirstUsbRom();
+                if (usbRom) {
+                    romNameDisplay.innerText = 'Loading from USB: ' + usbRom.name;
+                    const data = await readFileAsBytes(usbRom);
+                    loadRomData(data, usbRom.name);
+                    return;
+                }
+            } catch (err) {
+                console.warn('[USB] Scan/load failed, falling back to bundled ROM:', err);
+            }
+        }
+        autoLoadDefaultRom();
+    }
+
+    // ============================================================
     // 2. AUDIO SYSTEM — AudioWorkletNode (reemplaza ScriptProcessor)
     // ============================================================
     let audioContext = null;
@@ -826,9 +917,9 @@ registerProcessor('gb-processor', GBProcessor);
                 loadRomData(pendingRomData.data, pendingRomData.name);
                 pendingRomData = null;
             } else {
-                // Sin ROM pendiente del usuario -> intentar cargar el cartucho
+                // Sin ROM pendiente del usuario -> USB zuerst, sonst Cartucho
                 // de ejemplo empaquetado (roms/examples.gb)
-                autoLoadDefaultRom();
+                autoLoadRom();
             }
         }
     };
