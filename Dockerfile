@@ -72,10 +72,9 @@ RUN bash -lc "source /home/gbemu/emsdk/emsdk_env.sh && \
 RUN bash -lc "source /home/gbemu/emsdk/emsdk_env.sh && \
     emmake ninja -C build"
 
-# ------------------------------------------------------------------
-# GB-EMU_Tizen ships NO Tizen widget wrapper (no config.xml/icon).
-# We assemble a minimal one here ourselves.
-# ------------------------------------------------------------------
+# GB-EMU_Tizen upstream ships no Tizen widget wrapper of its own; config.xml
+# and icon.png now live in res/ in this repo (D:\brightcraft\GB-EMU_Tizen\res)
+# and get copied into the widget/ output below.
 WORKDIR /home/gbemu
 RUN mkdir -p widget
 
@@ -87,35 +86,9 @@ RUN cp gb-emu-tizen/build/gb-emu.wasm widget/
 # Optional: ship the bundled example ROM so it's available for manual loading/testing
 RUN mkdir -p widget/roms && cp gb-emu-tizen/roms/examples.gb widget/roms/ 2>/dev/null || true
 
-# Minimal Tizen widget config (adjust app id / name / privileges as needed)
-RUN cat > widget/config.xml << 'EOF'
-<?xml version="1.0" encoding="UTF-8"?>
-<widget xmlns="http://www.w3.org/ns/widgets"
-        xmlns:tizen="http://tizen.org/ns/widgets"
-        id="GbEmuTzn01.GBEmu"
-        version="1.0.0"
-        viewmodes="maximized">
-    <tizen:application id="GbEmuTzn01.GBEmu"
-                        package="GbEmuTzn01"
-                        required_version="6.0"/>
-    <content src="index.html"/>
-    <feature name="http://tizen.org/feature/screen.size.all"/>
-    <icon src="icon.svg"/>
-    <name>GBEmu</name>
-    <tizen:profile name="tv-samsung"/>
-    <tizen:metadata key="http://samsung.com/tv/metadata/use.dialog" value="true"/>
-</widget>
-EOF
-
-# Minimal placeholder icon (swap this out for something nicer)
-RUN cat > widget/icon.svg << 'EOF'
-<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128">
-  <rect width="128" height="128" rx="16" fill="#8b8b8b"/>
-  <rect x="24" y="16" width="80" height="96" rx="8" fill="#c0c0c0"/>
-  <rect x="34" y="26" width="60" height="44" fill="#9bbc0f"/>
-  <circle cx="64" cy="92" r="10" fill="#333"/>
-</svg>
-EOF
+# Tizen widget config + icon, shipped in the repo at res/
+RUN cp gb-emu-tizen/res/config.xml widget/config.xml
+RUN cp gb-emu-tizen/res/icon.png   widget/icon.png
 
 # Sign and package the application into a WGT file
 RUN echo \
