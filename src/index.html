@@ -290,9 +290,14 @@
         <div class="screen-border">
             <canvas id="lcd" width="160" height="144"></canvas>
             <div class="rom-select-overlay" id="rom-select-overlay">
-                <div class="rom-select-title" id="rom-select-title">SELECT ROM (USB)</div>
+                <div class="rom-select-title" id="rom-select-title">SELECT ROM</div>
                 <div id="rom-select-list"></div>
                 <div class="rom-select-hint">D-PAD/STICK = MOVE&nbsp;&nbsp;|&nbsp;&nbsp;OK/A = LOAD</div>
+            </div>
+            <div class="rom-select-overlay" id="server-config-overlay">
+                <div class="rom-select-title">ROM SERVER ADDRESS</div>
+                <div id="server-config-value" style="text-align:center;font-family:monospace;font-size:18px;margin:12px 0;"></div>
+                <div class="rom-select-hint">LEFT/RIGHT = DIGIT&nbsp;&nbsp;|&nbsp;&nbsp;UP/DOWN = CHANGE&nbsp;&nbsp;|&nbsp;&nbsp;OK/A = SAVE&nbsp;&nbsp;|&nbsp;&nbsp;B = CANCEL</div>
             </div>
             <div class="rom-select-overlay" id="game-menu-overlay">
                 <div class="rom-select-title">GAME MENU</div>
@@ -486,6 +491,123 @@
         });
     }
 
+    // ============================================================
+    // WI-FI ROM DOWNLOAD + CACHE (no USB needed)
+    // "Download ROMs (Wi-Fi)" in the game menu fetches a ROM list from
+    // a small HTTP server on your PC (tools/serve-roms.py) and saves
+    // every ROM into the app's private writable storage on the TV
+    // (wgt-private/roms/). Saved ROMs show up in the picker alongside
+    // USB ones and keep working offline - the server only needs to run
+    // while downloading.
+    // Uses the Tizen 5.0+ FileSystemManager API (openFile/listDirectory),
+    // which handles binary data properly via Uint8Array.
+    // ============================================================
+    // Compile-time default only - the address can be changed on the TV via
+    // the game menu ("Set ROM Server", D-pad digit editor) and is then kept
+    // in localStorage, which persists in the app's private data.
+    const DEFAULT_ROM_SERVER_URL = 'http://192.168.101.192:8000'; // <- your PC's LAN IP
+    const ROM_SERVER_STORAGE_KEY = 'romServerUrl';
+    const CACHED_ROMS_DIR = 'wgt-private/roms';
+
+    function getRomServerUrl() {
+        try {
+            const saved = localStorage.getItem(ROM_SERVER_STORAGE_KEY);
+            if (saved) return saved;
+        } catch (e) { /* localStorage unavailable - fall through to default */ }
+        return DEFAULT_ROM_SERVER_URL;
+    }
+
+    function listDirectoryNames(path) {
+        return new Promise((resolve, reject) => {
+            tizen.filesystem.listDirectory(path, resolve, reject);
+        });
+    }
+
+    // Returns entries for every ROM previously downloaded to the TV.
+    async function findAllCachedRoms() {
+        if (!(isTizen && tizen.filesystem && tizen.filesystem.listDirectory)) return [];
+        try {
+            const names = await listDirectoryNames(CACHED_ROMS_DIR);
+            const roms = names
+                .filter(n => /\.(gb|gbc)$/i.test(n))
+                .map(n => ({ type: 'cached', name: n, path: CACHED_ROMS_DIR + '/' + n, storageLabel: 'saved' }));
+            console.log('[CACHE] Found', roms.length, 'saved ROM(s):', roms.map(r => r.name));
+            return roms;
+        } catch (err) {
+            // Directory doesn't exist yet (nothing downloaded) - not an error.
+            console.log('[CACHE] No saved ROMs yet:', err && err.message);
+            return [];
+        }
+    }
+
+    function writeCachedRom(path, data) {
+        const handle = tizen.filesystem.openFile(path, 'w');
+        try {
+            handle.writeData(data);
+        } finally {
+            handle.close();
+        }
+    }
+
+    function readCachedRom(path) {
+        const CHUNK = 1 << 16;
+        const handle = tizen.filesystem.openFile(path, 'r');
+        try {
+            const chunks = [];
+            let total = 0;
+            while (true) {
+                let chunk;
+                try {
+                    chunk = handle.readData(CHUNK);
+                } catch (e) {
+                    break; // EOF on some firmwares throws instead of returning empty
+                }
+                if (!chunk || chunk.length === 0) break;
+                chunks.push(chunk);
+                total += chunk.length;
+                if (chunk.length < CHUNK) break;
+            }
+            const out = new Uint8Array(total);
+            let offset = 0;
+            for (const c of chunks) { out.set(c, offset); offset += c.length; }
+            return out;
+        } finally {
+            handle.close();
+        }
+    }
+
+    // Fetches <server>/roms.json (array of file names), downloads each ROM
+    // and stores it in wgt-private/roms/. Overwrites same-named files, so
+    // re-running refreshes the collection.
+    async function downloadRomsFromServer() {
+        const serverUrl = getRomServerUrl();
+        romNameDisplay.innerText = 'Contacting ' + serverUrl + '...';
+        romNameDisplay.style.color = '#555';
+
+        const res = await fetch(serverUrl + '/roms.json');
+        if (!res.ok) throw new Error('Server answered HTTP ' + res.status);
+        const names = await res.json();
+        if (!Array.isArray(names) || names.length === 0) {
+            romNameDisplay.innerText = 'Server has no ROMs';
+            return 0;
+        }
+
+        try { tizen.filesystem.createDirectory(CACHED_ROMS_DIR); } catch (e) { /* already exists */ }
+
+        let done = 0;
+        for (const name of names) {
+            romNameDisplay.innerText = 'Downloading ' + name + ' (' + (done + 1) + '/' + names.length + ')...';
+            const r = await fetch(serverUrl + '/' + encodeURIComponent(name));
+            if (!r.ok) { console.warn('[CACHE] Skipping', name, '- HTTP', r.status); continue; }
+            const data = new Uint8Array(await r.arrayBuffer());
+            writeCachedRom(CACHED_ROMS_DIR + '/' + name, data);
+            console.log('[CACHE] Saved', name, '(' + data.length + ' bytes)');
+            done++;
+        }
+        romNameDisplay.innerText = 'Downloaded ' + done + ' ROM(s)';
+        return done;
+    }
+
     // Scans all mounted USB storages and returns every .gb File handle
     // found (with the storage label attached for display/debugging).
     // Only looks at the top level of each drive - extend with recursion
@@ -508,24 +630,31 @@
         return found;
     }
 
-    // Tries USB first, falls back to the bundled example ROM. If more than
-    // one ROM is found on USB, shows an on-screen picker instead of guessing.
+    // Reads the bytes of any ROM entry, regardless of where it lives.
+    async function readRomEntry(entry) {
+        if (entry.type === 'cached') return readCachedRom(entry.path);
+        return readFileAsBytes(entry.file);
+    }
+
+    // Tries USB + saved (Wi-Fi downloaded) ROMs first, falls back to the
+    // bundled example ROM. If more than one ROM is found, shows an
+    // on-screen picker instead of guessing.
     async function autoLoadRom() {
         if (isTizen) {
             try {
-                const usbRoms = await findAllUsbRoms();
-                if (usbRoms.length === 1) {
-                    const entry = usbRoms[0];
-                    romNameDisplay.innerText = 'Loading from USB: ' + entry.name;
-                    const data = await readFileAsBytes(entry.file);
+                const roms = (await findAllUsbRoms()).concat(await findAllCachedRoms());
+                if (roms.length === 1) {
+                    const entry = roms[0];
+                    romNameDisplay.innerText = 'Loading: ' + entry.name;
+                    const data = await readRomEntry(entry);
                     loadRomData(data, entry.name);
                     return;
-                } else if (usbRoms.length > 1) {
-                    showRomSelector(usbRoms, 'SELECT ROM (USB)');
+                } else if (roms.length > 1) {
+                    showRomSelector(roms, 'SELECT ROM');
                     return;
                 }
             } catch (err) {
-                console.warn('[USB] Scan/load failed, falling back to bundled ROM:', err);
+                console.warn('[ROM] Scan/load failed, falling back to bundled ROM:', err);
             }
         }
         autoLoadDefaultRom();
@@ -576,7 +705,7 @@
             if (entry.type === 'bundled') {
                 await autoLoadDefaultRom();
             } else {
-                const data = await readFileAsBytes(entry.file);
+                const data = await readRomEntry(entry);
                 loadRomData(data, entry.name);
             }
         } catch (err) {
@@ -586,13 +715,14 @@
         }
     }
 
-    // Re-scans USB and always shows the picker (even with 0/1 USB ROMs),
-    // with the bundled example ROM always offered as an extra option.
-    // Used by the in-game "Change ROM" menu entry.
+    // Re-scans USB + saved ROMs and always shows the picker (even with 0/1
+    // ROMs found), with the bundled example ROM always offered as an extra
+    // option. Used by the in-game "Change ROM" menu entry.
     async function openRomChangeMenu() {
         let entries = [];
         if (isTizen) {
-            try { entries = await findAllUsbRoms(); } catch (err) { console.warn('[USB] Rescan failed:', err); }
+            try { entries = entries.concat(await findAllUsbRoms()); } catch (err) { console.warn('[USB] Rescan failed:', err); }
+            try { entries = entries.concat(await findAllCachedRoms()); } catch (err) { console.warn('[CACHE] Rescan failed:', err); }
         }
         entries = entries.concat([{ type: 'bundled', name: 'examples.gb (bundled)' }]);
         showRomSelector(entries, 'CHANGE ROM');
@@ -621,7 +751,7 @@
     // on a gamepad. Lets you back out of a running ROM without having to
     // restart the whole app.
     // ============================================================
-    const GAME_MENU_OPTIONS = ['Resume', 'Change ROM (USB)', 'Exit App'];
+    const GAME_MENU_OPTIONS = ['Resume', 'Change ROM', 'Download ROMs (Wi-Fi)', 'Set ROM Server', 'Exit App'];
     let gameMenuActive = false;
     let gameMenuIndex  = 0;
 
@@ -633,7 +763,7 @@
     }
 
     function openGameMenu() {
-        if (romSelectActive) return; // don't stack over the ROM picker
+        if (romSelectActive || serverConfigActive) return; // don't stack over the ROM picker / server editor
         gameMenuActive = true;
         gameMenuIndex = 0;
         document.getElementById('game-menu-overlay').classList.add('visible');
@@ -665,12 +795,118 @@
         const choice = GAME_MENU_OPTIONS[gameMenuIndex];
         if (choice === 'Resume') {
             closeGameMenu();
-        } else if (choice === 'Change ROM (USB)') {
+        } else if (choice === 'Change ROM') {
             closeGameMenu();
             await openRomChangeMenu();
+        } else if (choice === 'Download ROMs (Wi-Fi)') {
+            closeGameMenu();
+            try {
+                const count = await downloadRomsFromServer();
+                if (count > 0) await openRomChangeMenu();
+            } catch (err) {
+                console.error('[CACHE] Download failed:', err);
+                romNameDisplay.innerText = 'Download failed (is the server on?)';
+                romNameDisplay.style.color = '#cc0000';
+            }
+        } else if (choice === 'Set ROM Server') {
+            closeGameMenu();
+            openServerConfig();
         } else if (choice === 'Exit App') {
             exitApp();
         }
+    }
+
+    // ============================================================
+    // ROM SERVER ADDRESS EDITOR
+    // Opened via "Set ROM Server" in the game menu. Edits the server
+    // IP + port digit by digit with the D-pad (LEFT/RIGHT = move,
+    // UP/DOWN = change digit, OK/A = save, B = cancel) and persists
+    // the result in localStorage - no rebuild needed when the PC's
+    // LAN IP changes.
+    // ============================================================
+    let serverConfigActive = false;
+    let serverDigits = [];      // 12 IP digits followed by 5 port digits
+    let serverDigitIndex = 0;
+
+    function urlToDigits(url) {
+        const m = /^https?:\/\/(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3}):(\d{1,5})/.exec(url) || [];
+        const octets = [m[1], m[2], m[3], m[4]].map(v => Math.min(255, parseInt(v || '0', 10) || 0));
+        const port = Math.min(65535, parseInt(m[5] || '8000', 10) || 8000);
+        const digits = [];
+        octets.forEach(o => String(o).padStart(3, '0').split('').forEach(d => digits.push(+d)));
+        String(port).padStart(5, '0').split('').forEach(d => digits.push(+d));
+        return digits;
+    }
+
+    function digitsToUrl(digits) {
+        const octets = [];
+        for (let i = 0; i < 4; i++) {
+            octets.push(Math.min(255, +digits.slice(i * 3, i * 3 + 3).join('')));
+        }
+        const port = Math.min(65535, Math.max(1, +digits.slice(12).join('')));
+        return 'http://' + octets.join('.') + ':' + port;
+    }
+
+    function renderServerConfig() {
+        let html = 'http://';
+        serverDigits.forEach((d, i) => {
+            if (i === 3 || i === 6 || i === 9) html += '.';
+            if (i === 12) html += ':';
+            const style = i === serverDigitIndex
+                ? 'background:#5a5;color:#000;padding:1px 2px;border-radius:2px;'
+                : 'padding:1px 2px;';
+            html += `<span style="${style}">${d}</span>`;
+        });
+        document.getElementById('server-config-value').innerHTML = html;
+    }
+
+    function openServerConfig() {
+        serverDigits = urlToDigits(getRomServerUrl());
+        serverDigitIndex = 0;
+        serverConfigActive = true;
+        document.getElementById('server-config-overlay').classList.add('visible');
+        renderServerConfig();
+    }
+
+    function closeServerConfig(save) {
+        serverConfigActive = false;
+        document.getElementById('server-config-overlay').classList.remove('visible');
+        if (!save) return;
+        const url = digitsToUrl(serverDigits);
+        try {
+            localStorage.setItem(ROM_SERVER_STORAGE_KEY, url);
+        } catch (e) {
+            console.warn('[CONFIG] Could not persist server URL:', e);
+        }
+        console.log('[CONFIG] ROM server set to', url);
+        romNameDisplay.innerText = 'ROM server: ' + url;
+        romNameDisplay.style.color = '#555';
+    }
+
+    // Handles a GB button id while the server address editor is open.
+    // Returns true if it consumed the press (same swallow-on-keyup
+    // pattern as the ROM picker).
+    function handleServerConfigInput(id, down) {
+        if (!serverConfigActive || !down) return serverConfigActive;
+
+        if (id === 1) { // LEFT
+            serverDigitIndex = (serverDigitIndex - 1 + serverDigits.length) % serverDigits.length;
+            renderServerConfig();
+        } else if (id === 0) { // RIGHT
+            serverDigitIndex = (serverDigitIndex + 1) % serverDigits.length;
+            renderServerConfig();
+        } else if (id === 2) { // UP
+            serverDigits[serverDigitIndex] = (serverDigits[serverDigitIndex] + 1) % 10;
+            renderServerConfig();
+        } else if (id === 3) { // DOWN
+            serverDigits[serverDigitIndex] = (serverDigits[serverDigitIndex] + 9) % 10;
+            renderServerConfig();
+        } else if (id === 4 || id === 7) { // A or START -> save
+            closeServerConfig(true);
+        } else if (id === 5) { // B -> cancel
+            closeServerConfig(false);
+        }
+        return true;
     }
 
     // Handles a GB button id while the game menu is open. Returns true if
@@ -776,8 +1012,9 @@
     function pressBtn(id, down) {
         id = parseInt(id);
 
-        // While the USB ROM picker or game menu is open, D-pad/A/START
-        // navigate those instead of controlling the emulator.
+        // While the ROM picker, game menu or server address editor is open,
+        // D-pad/A/START navigate those instead of controlling the emulator.
+        if (handleServerConfigInput(id, down)) return;
         if (handleRomSelectorInput(id, down)) return;
         if (handleGameMenuInput(id, down)) return;
 
