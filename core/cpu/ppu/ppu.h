@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <vector>
 #include "mmu.h"   // Ajustá el path si es necesario
+#include "state/state.h"
 
 class ppu
 {
@@ -10,6 +11,10 @@ public:
 
     void step(int cpu_cycles);
     void enable_debug(bool enable);
+
+    // Save states
+    void saveState(StateWriter& out) const;
+    void loadState(StateReader& in);
 
     // Estado visible para el emulador principal
     bool     frame_complete;

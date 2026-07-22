@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "cartridge/cartridge.h"
+#include "state/state.h"
 
 class ppu; // Forward declaration
 class timer; // Forward declaration
@@ -46,6 +47,16 @@ public:
     // ============================================================
     bool isCGB()         const { return cgb_mode; }
     bool isDoubleSpeed() const { return double_speed; }
+
+    // ============================================================
+    // NUEVAS: Save states
+    // ============================================================
+    // Guarda/restaura toda la memoria + estado CGB + cartucho (RAM/MBC).
+    // El estado de los botones NO se toca: es entrada en vivo del usuario.
+    void saveState(StateWriter& out) const;
+    void loadState(StateReader& in);
+
+    const std::string& romTitle() const { return cart.getTitle(); }
 
 private:
     // Instancia del cartucho

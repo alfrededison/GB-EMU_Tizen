@@ -607,3 +607,49 @@ void mmu::setAPU(APU* apu_ptr) {
     apu = apu_ptr;
     std::cout << "[MMU] APU conectada para manejar registros de audio ($FF10-$FF3F)\n";
 }
+// ============================================================
+// SAVE STATES
+// ============================================================
+void mmu::saveState(StateWriter& out) const {
+    out.writeArray(VRAM);
+    out.writeArray(WRAM);
+    out.writeArray(HRAM);
+    out.writeArray(IO);
+    out.writeArray(OAM);
+    out.write(IE);
+    out.write(IF);
+
+    out.write(cgb_mode);
+    out.write(double_speed);
+    out.write(speed_switch_armed);
+    out.write(vram_bank);
+    out.write(wram_bank);
+    out.writeArray(BG_PAL);
+    out.writeArray(OBJ_PAL);
+    out.write(bcps);
+    out.write(ocps);
+
+    cart.saveState(out);
+}
+
+void mmu::loadState(StateReader& in) {
+    in.readArray(VRAM);
+    in.readArray(WRAM);
+    in.readArray(HRAM);
+    in.readArray(IO);
+    in.readArray(OAM);
+    IE = in.read<uint8_t>();
+    IF = in.read<uint8_t>();
+
+    cgb_mode           = in.read<bool>();
+    double_speed       = in.read<bool>();
+    speed_switch_armed = in.read<bool>();
+    vram_bank          = in.read<uint8_t>();
+    wram_bank          = in.read<uint8_t>();
+    in.readArray(BG_PAL);
+    in.readArray(OBJ_PAL);
+    bcps = in.read<uint8_t>();
+    ocps = in.read<uint8_t>();
+
+    cart.loadState(in);
+}

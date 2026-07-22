@@ -22,4 +22,7 @@ public:
     
     uint8_t readRAM(uint16_t address) override;
     void writeRAM(uint16_t address, uint8_t value) override;
+
+    void saveState(StateWriter& out) const override;
+    void loadState(StateReader& in) override;
 };

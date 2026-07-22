@@ -49,3 +49,18 @@ void MBC2::writeRAM(uint16_t address, uint8_t value) {
     uint16_t offset = (address - 0xA000) & 0x01FF;
     builtinRam[offset] = value & 0x0F;
 }
+
+// ============================================================
+// SAVE STATES
+// ============================================================
+void MBC2::saveState(StateWriter& out) const {
+    out.write(romBank);
+    out.write(ramEnabled);
+    out.writeArray(builtinRam);
+}
+
+void MBC2::loadState(StateReader& in) {
+    romBank    = in.read<uint8_t>();
+    ramEnabled = in.read<bool>();
+    in.readArray(builtinRam);
+}

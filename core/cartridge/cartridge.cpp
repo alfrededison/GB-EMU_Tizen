@@ -244,3 +244,17 @@ void cartridge::parseHeader()
 
     createMBC();                // ← MBC recibe referencias ya válidas
 }
+// ============================================================
+// SAVE STATES
+// ============================================================
+// La ROM no se guarda (es inmutable y la clave del state ya es la
+// propia ROM); solo la RAM externa y el estado del mapper.
+void cartridge::saveState(StateWriter& out) const {
+    out.writeVector(RAM);
+    if (mbc) mbc->saveState(out);
+}
+
+void cartridge::loadState(StateReader& in) {
+    in.readVector(RAM);
+    if (mbc) mbc->loadState(in);
+}

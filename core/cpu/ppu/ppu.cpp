@@ -537,3 +537,33 @@ bool ppu::can_access_oam() const
     if (!(memory.readMemory(0xFF40) & 0x80)) return true;
     return (current_mode == 0 || current_mode == 1);
 }
+// ============================================================
+// SAVE STATES
+// ============================================================
+// El framebuffer (gfx) también se guarda para que al restaurar
+// se vea inmediatamente el frame de la partida guardada.
+void ppu::saveState(StateWriter& out) const {
+    out.write(frame_complete);
+    out.write(current_mode);
+    out.write(current_line);
+    out.write(dots_counter);
+    out.write(scanline_dots);
+    out.write(prev_stat_line);
+    out.write(vblank_irq_fired);
+    out.write(window_line_counter);
+    out.writeBytes(bg_priority, sizeof(bg_priority));
+    out.writeBytes(gfx.data(), gfx.size() * sizeof(uint32_t));
+}
+
+void ppu::loadState(StateReader& in) {
+    frame_complete      = in.read<bool>();
+    current_mode        = in.read<int>();
+    current_line        = in.read<int>();
+    dots_counter        = in.read<int>();
+    scanline_dots       = in.read<int>();
+    prev_stat_line      = in.read<bool>();
+    vblank_irq_fired    = in.read<bool>();
+    window_line_counter = in.read<int>();
+    in.readBytes(bg_priority, sizeof(bg_priority));
+    in.readBytes(gfx.data(), gfx.size() * sizeof(uint32_t));
+}
