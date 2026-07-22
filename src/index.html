@@ -13,11 +13,15 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 100vh;
+            height: 100vh;
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            overflow: hidden;
         }
         .gb-case {
+            /* Scaled at runtime (see fitCaseToScreen) so the emulator
+               always fills the full screen height on any TV/display. */
+            transform-origin: center center;
             background-color: #c0c0c0;
             padding: 32px;
             border-radius: 14px 14px 56px 14px;
@@ -382,6 +386,30 @@
 
     // Controls hint in the HTML already covers both remote and gamepad,
     // no per-platform override needed anymore.
+
+    // ============================================================
+    // 0b. FIT EMULATOR TO SCREEN
+    // The GameBoy case is laid out at a fixed pixel size (canvas is
+    // 640x576 plus the surrounding chrome). Scale the whole case as one
+    // unit so it fills the full screen height (clamped to the width on
+    // narrow/portrait displays). Scaling the entire case keeps the
+    // hardcoded-size overlays (ROM picker, game menu, server editor)
+    // perfectly aligned with the canvas.
+    // ============================================================
+    function fitCaseToScreen() {
+        const gbCase = document.querySelector('.gb-case');
+        if (!gbCase) return;
+        // offsetWidth/offsetHeight ignore the current transform, so this
+        // always measures the unscaled layout size.
+        const scale = Math.min(
+            window.innerHeight / gbCase.offsetHeight,
+            window.innerWidth  / gbCase.offsetWidth
+        );
+        gbCase.style.transform = 'scale(' + scale + ')';
+    }
+    window.addEventListener('resize', fitCaseToScreen);
+    window.addEventListener('load', fitCaseToScreen);
+    document.addEventListener('DOMContentLoaded', fitCaseToScreen);
 
     // ============================================================
     // 1. GESTIÓN DE CARGA DE ROM
