@@ -17,12 +17,39 @@ mmu::mmu(const std::string& romPath) : cart(romPath)
     IO.fill(0);
     OAM.fill(0);
     IE = 0;
-    // IF ahora usa IO[0x0F] directamente para evitar desincronización
-    IO[0x0F] = 0; // IF - Interrupt Flag
-    
-    // IMPORTANTE: Inicializar el joypad correctamente
-    // Bits 4-5 deben estar en 1 por defecto (ningún grupo seleccionado)
-    IO[0x00] = 0xFF; // 0xFF00 - Joypad
+
+    // Estado de registros I/O que deja el boot ROM de la DMG (Pan Docs,
+    // "Power Up Sequence"). Sin esto los juegos que asumen LCD encendida
+    // (LCDC=0x91) se quedan esperando LY==0x91 para siempre → pantalla negra.
+    IO[0x00] = 0xCF; // P1/JOYP
+    IO[0x02] = 0x7E; // SC
+    IO[0x04] = 0xAB; // DIV
+    IO[0x07] = 0xF8; // TAC
+    IO[0x0F] = 0xE1; // IF - Interrupt Flag
+    IO[0x10] = 0x80; // NR10
+    IO[0x11] = 0xBF; // NR11
+    IO[0x12] = 0xF3; // NR12
+    IO[0x13] = 0xFF; // NR13
+    IO[0x14] = 0xBF; // NR14
+    IO[0x16] = 0x3F; // NR21
+    IO[0x18] = 0xFF; // NR23
+    IO[0x19] = 0xBF; // NR24
+    IO[0x1A] = 0x7F; // NR30
+    IO[0x1B] = 0xFF; // NR31
+    IO[0x1C] = 0x9F; // NR32
+    IO[0x1D] = 0xFF; // NR33
+    IO[0x1E] = 0xBF; // NR34
+    IO[0x20] = 0xFF; // NR41
+    IO[0x23] = 0xBF; // NR44
+    IO[0x24] = 0x77; // NR50
+    IO[0x25] = 0xF3; // NR51
+    IO[0x26] = 0xF1; // NR52
+    IO[0x40] = 0x91; // LCDC: LCD encendida, BG activado
+    IO[0x41] = 0x85; // STAT
+    IO[0x46] = 0xFF; // DMA
+    IO[0x47] = 0xFC; // BGP
+    IO[0x48] = 0xFF; // OBP0
+    IO[0x49] = 0xFF; // OBP1
     
     std::cout << "MMU Inicializada. Cartucho conectado: " << romPath << "\n";
 }
@@ -239,10 +266,20 @@ uint8_t mmu::readMemory(uint16_t address)
             return 0xFF;
         }
         
+        // Registros inexistentes en DMG (huecos y rango CGB: KEY1, VBK,
+        // HDMA, paletas CGB, SVBK...). En hardware real leen 0xFF; devolver
+        // 0x00 hace que los juegos crean estar en una CGB (p.ej. la rutina
+        // de doble velocidad de Blargg ejecuta STOP y congela todo).
+        if (address == 0xFF03 ||
+            (address >= 0xFF08 && address <= 0xFF0E) ||
+            (address >= 0xFF4C && address <= 0xFF7F)) {
+            return 0xFF;
+        }
+
         // Otros registros I/O
         return IO[offSet(address, 0xFF00)];
     }
-    
+
     // HRAM (High RAM)
     else if (address >= 0xFF80 && address <= 0xFFFE) {
         // DEBUG: Track reads from 0xFF85 (heavily polled in Tetris)
@@ -377,6 +414,23 @@ void mmu::writeMemory(uint16_t address, uint8_t value)
             return;
         }
         
+        if (address == 0xFF41) {
+            // Bug del STAT en DMG: cualquier escritura a STAT se comporta
+            // durante un ciclo como si se hubiera escrito 0xFF, disparando
+            // una interrupción STAT espuria si la PPU está en modo 0/1 o
+            // hay coincidencia LY==LYC. Juegos como Jurassic Park (Ocean)
+            // dependen de este quirk para su secuenciador de intro.
+            bool lcd_on = (IO[0x40] & 0x80) != 0;
+            uint8_t mode = IO[0x41] & 0x03;
+            bool lyc_match = (IO[0x41] & 0x04) != 0;
+            if (lcd_on && (mode == 0 || mode == 1 || lyc_match)) {
+                IO[0x0F] |= 0x02; // IF bit 1 (STAT)
+            }
+            // Bits 0-2 son de solo lectura (los mantiene la PPU)
+            IO[0x41] = (IO[0x41] & 0x07) | (value & 0x78) | 0x80;
+            return;
+        }
+
         // ============================================================
         // REGISTROS DE AUDIO (APU) - $FF10-$FF3F
         // ============================================================
@@ -386,7 +440,7 @@ void mmu::writeMemory(uint16_t address, uint8_t value)
             }
             return;
         }
-        
+
         // Otros registros I/O normales
         IO[offSet(address, 0xFF00)] = value;
         return;

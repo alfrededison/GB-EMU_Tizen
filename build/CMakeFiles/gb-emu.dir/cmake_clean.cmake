@@ -1,8 +1,12 @@
 file(REMOVE_RECURSE
   "CMakeFiles/gb-emu.dir/core/cartridge/IMBC/type_cartridge/MBC1.cpp.o"
   "CMakeFiles/gb-emu.dir/core/cartridge/IMBC/type_cartridge/MBC1.cpp.o.d"
+  "CMakeFiles/gb-emu.dir/core/cartridge/IMBC/type_cartridge/MBC2.cpp.o"
+  "CMakeFiles/gb-emu.dir/core/cartridge/IMBC/type_cartridge/MBC2.cpp.o.d"
   "CMakeFiles/gb-emu.dir/core/cartridge/IMBC/type_cartridge/MBC3.cpp.o"
   "CMakeFiles/gb-emu.dir/core/cartridge/IMBC/type_cartridge/MBC3.cpp.o.d"
+  "CMakeFiles/gb-emu.dir/core/cartridge/IMBC/type_cartridge/MBC5.cpp.o"
+  "CMakeFiles/gb-emu.dir/core/cartridge/IMBC/type_cartridge/MBC5.cpp.o.d"
   "CMakeFiles/gb-emu.dir/core/cartridge/IMBC/type_cartridge/RomOnly.cpp.o"
   "CMakeFiles/gb-emu.dir/core/cartridge/IMBC/type_cartridge/RomOnly.cpp.o.d"
   "CMakeFiles/gb-emu.dir/core/cartridge/cartridge.cpp.o"

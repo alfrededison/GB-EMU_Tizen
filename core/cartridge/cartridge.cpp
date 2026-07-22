@@ -1,7 +1,9 @@
 #include "cartridge.h"
 #include "IMBC/type_cartridge/RomOnly.h"
 #include "IMBC/type_cartridge/MBC1.h"
+#include "IMBC/type_cartridge/MBC2.h"
 #include "IMBC/type_cartridge/MBC3.h"
+#include "IMBC/type_cartridge/MBC5.h"
 #include <fstream>
 #include <iostream>
 
@@ -184,6 +186,13 @@ void cartridge::createMBC()
             std::cout << "[Cartridge] MBC: MBC1\n";
             break;
 
+        // ---- MBC2 ----
+        case 0x05:  // MBC2
+        case 0x06:  // MBC2 + BATTERY
+            mbc = std::make_unique<MBC2>(ROM, rom_banks_count);
+            std::cout << "[Cartridge] MBC: MBC2\n";
+            break;
+
         // ---- MBC3 ----
         case 0x0F:  // MBC3 + TIMER + BATTERY
         case 0x10:  // MBC3 + TIMER + RAM + BATTERY
@@ -192,6 +201,17 @@ void cartridge::createMBC()
         case 0x13:  // MBC3 + RAM + BATTERY  ← Pokémon Rojo
             mbc = std::make_unique<MBC3>(ROM, RAM, rom_banks_count);
             std::cout << "[Cartridge] MBC: MBC3\n";
+            break;
+
+        // ---- MBC5 ----
+        case 0x19:  // MBC5
+        case 0x1A:  // MBC5 + RAM
+        case 0x1B:  // MBC5 + RAM + BATTERY  ← Pokémon Amarillo/Oro pirata, etc.
+        case 0x1C:  // MBC5 + RUMBLE
+        case 0x1D:  // MBC5 + RUMBLE + RAM
+        case 0x1E:  // MBC5 + RUMBLE + RAM + BATTERY
+            mbc = std::make_unique<MBC5>(ROM, RAM, rom_banks_count);
+            std::cout << "[Cartridge] MBC: MBC5\n";
             break;
 
         default:
