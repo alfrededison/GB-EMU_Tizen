@@ -48,6 +48,7 @@ private:
     uint8_t last_mode_logged;
 
     // Métodos internos
+    uint32_t cgb_color(const uint8_t* pal_ram, int pal, int color_num);
     void step_one_dot();
     void check_lyc_coincidence();
     void update_stat_interrupt();

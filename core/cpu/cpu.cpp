@@ -21,17 +21,28 @@ cpu::cpu(mmu& mmu_ref) : memory(mmu_ref)
     PC = 0x100;
     SP = 0xFFFE;
 
-    // Estado de registros que deja el boot ROM de la DMG.
-    // A=0x01 identifica el hardware como Game Boy clásica: muchos juegos
-    // lo leen para decidir entre rutas DMG/CGB (con A=0 se cuelgan).
-    r8[A] = 0x01;
-    r8[F] = 0xB0;
-    r8[B] = 0x00;
-    r8[C] = 0x13;
-    r8[D] = 0x00;
-    r8[E] = 0xD8;
-    r8[H] = 0x01;
-    r8[L] = 0x4D;
+    // Estado de registros que deja el boot ROM.
+    // A identifica el hardware: 0x01 = Game Boy clásica, 0x11 = Game Boy
+    // Color. Muchos juegos lo leen para decidir entre rutas DMG/CGB.
+    if (memory.isCGB()) {
+        r8[A] = 0x11;
+        r8[F] = 0x80;
+        r8[B] = 0x00;
+        r8[C] = 0x00;
+        r8[D] = 0xFF;
+        r8[E] = 0x56;
+        r8[H] = 0x00;
+        r8[L] = 0x0D;
+    } else {
+        r8[A] = 0x01;
+        r8[F] = 0xB0;
+        r8[B] = 0x00;
+        r8[C] = 0x13;
+        r8[D] = 0x00;
+        r8[E] = 0xD8;
+        r8[H] = 0x01;
+        r8[L] = 0x4D;
+    }
 
     // 2. Inicialización de la tabla (Limpiar todo a nullptr)
     table_opcode.fill(nullptr);
@@ -714,7 +725,18 @@ int cpu::STOP(uint8_t opcode)
 {
     (void)opcode;
     // STOP es 0x10 0x00, saltamos el byte extra
-    PC++; 
+    PC++;
+
+    // En CGB, STOP con el switch de velocidad armado (KEY1 bit 0) no
+    // detiene la CPU: conmuta entre velocidad simple y doble.
+    if (memory.cgb_mode && memory.speed_switch_armed) {
+        memory.double_speed       = !memory.double_speed;
+        memory.speed_switch_armed = false;
+        std::cout << "[CPU] Cambio de velocidad CGB → "
+                  << (memory.double_speed ? "DOBLE" : "NORMAL") << "\n";
+        return 4;
+    }
+
     isStopped = true;
     //std::cout <<"stop " << "\n";
     return 4;

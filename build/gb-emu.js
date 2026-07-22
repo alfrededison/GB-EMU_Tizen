@@ -5303,7 +5303,7 @@ function checkIncomingModuleAPI() {
   ignoredModuleProp('wasmBinary');
 }
 var ASM_CONSTS = {
-  85652: () => { if (typeof drawCanvas === 'function') { drawCanvas(); } }
+  85764: () => { if (typeof drawCanvas === 'function') { drawCanvas(); } }
 };
 
 // Imports from the Wasm binary.

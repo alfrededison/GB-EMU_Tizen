@@ -234,6 +234,7 @@ void cartridge::parseHeader()
     verifyChecksum();  // Advertencia, no aborta
     Get_Title();
     setCartridgeType();
+    cgb_flag = ROM[0x0143];
 
     ROM_type        = ROM[0x0148];
     rom_banks_count = resolveRomBanks(ROM_type);

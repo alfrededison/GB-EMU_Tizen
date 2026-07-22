@@ -16,7 +16,14 @@ mmu::mmu(const std::string& romPath) : cart(romPath)
     HRAM.fill(0);
     IO.fill(0);
     OAM.fill(0);
+    BG_PAL.fill(0xFF);  // En hardware la palette RAM arranca sin inicializar (≈blanco)
+    OBJ_PAL.fill(0xFF);
     IE = 0;
+
+    // Modo CGB si el cartucho lo declara en el header (0x143)
+    cgb_mode = (cart.getCGBFlag() & 0x80) != 0;
+    if (cgb_mode)
+        std::cout << "[MMU] Cartucho CGB detectado. Modo Game Boy Color activado.\n";
 
     // Estado de registros I/O que deja el boot ROM de la DMG (Pan Docs,
     // "Power Up Sequence"). Sin esto los juegos que asumen LCD encendida
@@ -58,6 +65,31 @@ mmu::mmu(const std::string& romPath) : cart(romPath)
 uint16_t mmu::offSet(uint16_t address, uint16_t base)
 {
     return address - base;
+}
+
+// --- Helper: VRAM DMA de CGB (HDMA/GDMA) ---
+// Simplificación: tanto la transferencia general (bit 7 = 0) como la de
+// HBlank (bit 7 = 1) se ejecutan completas de inmediato. FF55 lee 0xFF
+// (transferencia terminada), así que los juegos que sondean ven "listo".
+void mmu::doHDMATransfer(uint8_t value)
+{
+    uint16_t src = ((IO[0x51] << 8) | IO[0x52]) & 0xFFF0;
+    uint16_t dst = (((IO[0x53] << 8) | IO[0x54]) & 0x1FF0);
+    int      len = ((value & 0x7F) + 1) * 0x10;
+
+    for (int i = 0; i < len; i++) {
+        uint32_t vram_off = static_cast<uint32_t>(vram_bank) * 0x2000u
+                          + ((dst + i) & 0x1FFF);
+        VRAM[vram_off] = readMemory(src + i);
+    }
+
+    // Dejar los registros de origen/destino apuntando al final (comportamiento real)
+    uint16_t new_src = src + len;
+    uint16_t new_dst = dst + len;
+    IO[0x51] = new_src >> 8;
+    IO[0x52] = new_src & 0xF0;
+    IO[0x53] = (new_dst >> 8) & 0x1F;
+    IO[0x54] = new_dst & 0xF0;
 }
 
 // --- Helper: DMA Transfer ---
@@ -124,7 +156,7 @@ uint8_t mmu::readMemory(uint16_t address)
     else if (address >= 0x8000 && address <= 0x9FFF) {
         // TODO: Verificar si PPU está en modo 3 (Drawing)
         // Durante modo 3, VRAM no es accesible
-        return VRAM[offSet(address, 0x8000)];
+        return VRAM[vramIndex(address)];
     }
     // RAM Externa (Cartucho)
     else if (address >= 0xA000 && address <= 0xBFFF) {
@@ -132,11 +164,11 @@ uint8_t mmu::readMemory(uint16_t address)
     }
     // WRAM (Work RAM)
     else if (address >= 0xC000 && address <= 0xDFFF) {
-        return WRAM[offSet(address, 0xC000)];
+        return WRAM[wramIndex(address)];
     }
     // ECHO RAM (Espejo de WRAM)
     else if (address >= 0xE000 && address <= 0xFDFF) {
-        return WRAM[offSet(address, 0xE000)];
+        return WRAM[wramIndex(address)];
     }
     // OAM (Object Attribute Memory)
     else if (address >= 0xFE00 && address <= 0xFE9F) {
@@ -266,6 +298,25 @@ uint8_t mmu::readMemory(uint16_t address)
             return 0xFF;
         }
         
+        // Registros CGB (solo existen en modo Game Boy Color)
+        if (cgb_mode) {
+            switch (address) {
+                case 0xFF4D: // KEY1: velocidad actual + switch armado
+                    return (double_speed ? 0x80 : 0x00)
+                         | (speed_switch_armed ? 0x01 : 0x00) | 0x7E;
+                case 0xFF4F: // VBK: banco de VRAM
+                    return 0xFE | vram_bank;
+                case 0xFF70: // SVBK: banco de WRAM
+                    return 0xF8 | wram_bank;
+                case 0xFF68: return bcps | 0x40;
+                case 0xFF69: return BG_PAL[bcps & 0x3F];
+                case 0xFF6A: return ocps | 0x40;
+                case 0xFF6B: return OBJ_PAL[ocps & 0x3F];
+                case 0xFF55: // HDMA5: las transferencias se hacen al instante
+                    return 0xFF;
+            }
+        }
+
         // Registros inexistentes en DMG (huecos y rango CGB: KEY1, VBK,
         // HDMA, paletas CGB, SVBK...). En hardware real leen 0xFF; devolver
         // 0x00 hace que los juegos crean estar en una CGB (p.ej. la rutina
@@ -340,7 +391,7 @@ void mmu::writeMemory(uint16_t address, uint8_t value)
     else if (address >= 0x8000 && address <= 0x9FFF) {
         // TODO: Verificar si PPU está en modo 3 (Drawing)
         // Durante modo 3, ignorar escrituras
-        VRAM[offSet(address, 0x8000)] = value;
+        VRAM[vramIndex(address)] = value;
         return;
     }
     // RAM Externa
@@ -363,12 +414,12 @@ void mmu::writeMemory(uint16_t address, uint8_t value)
                 std::cout << "[WRAM SPRITE BUFFER] 100 writes to sprite buffer area!\n";
             }
         }
-        WRAM[offSet(address, 0xC000)] = value;
+        WRAM[wramIndex(address)] = value;
         return;
     }
     // ECHO RAM (Escribir en WRAM correspondiente)
     else if (address >= 0xE000 && address <= 0xFDFF) {
-        WRAM[offSet(address, 0xE000)] = value;
+        WRAM[wramIndex(address)] = value;
         return;
     }
     // OAM
@@ -420,15 +471,47 @@ void mmu::writeMemory(uint16_t address, uint8_t value)
             // una interrupción STAT espuria si la PPU está en modo 0/1 o
             // hay coincidencia LY==LYC. Juegos como Jurassic Park (Ocean)
             // dependen de este quirk para su secuenciador de intro.
-            bool lcd_on = (IO[0x40] & 0x80) != 0;
-            uint8_t mode = IO[0x41] & 0x03;
-            bool lyc_match = (IO[0x41] & 0x04) != 0;
-            if (lcd_on && (mode == 0 || mode == 1 || lyc_match)) {
-                IO[0x0F] |= 0x02; // IF bit 1 (STAT)
+            // La CGB no tiene este bug, así que solo aplica en modo DMG.
+            if (!cgb_mode) {
+                bool lcd_on = (IO[0x40] & 0x80) != 0;
+                uint8_t mode = IO[0x41] & 0x03;
+                bool lyc_match = (IO[0x41] & 0x04) != 0;
+                if (lcd_on && (mode == 0 || mode == 1 || lyc_match)) {
+                    IO[0x0F] |= 0x02; // IF bit 1 (STAT)
+                }
             }
             // Bits 0-2 son de solo lectura (los mantiene la PPU)
             IO[0x41] = (IO[0x41] & 0x07) | (value & 0x78) | 0x80;
             return;
+        }
+
+        // Registros CGB (solo activos en modo Game Boy Color)
+        if (cgb_mode) {
+            switch (address) {
+                case 0xFF4D: // KEY1: armar el cambio de velocidad (se consume en STOP)
+                    speed_switch_armed = (value & 0x01) != 0;
+                    return;
+                case 0xFF4F: // VBK: banco de VRAM
+                    vram_bank = value & 0x01;
+                    return;
+                case 0xFF70: // SVBK: banco de WRAM (0 se trata como 1)
+                    wram_bank = value & 0x07;
+                    if (wram_bank == 0) wram_bank = 1;
+                    return;
+                case 0xFF68: bcps = value & 0xBF; return;
+                case 0xFF69: // BCPD: escribir palette RAM de BG
+                    BG_PAL[bcps & 0x3F] = value;
+                    if (bcps & 0x80) bcps = 0x80 | ((bcps + 1) & 0x3F);
+                    return;
+                case 0xFF6A: ocps = value & 0xBF; return;
+                case 0xFF6B: // OCPD: escribir palette RAM de OBJ
+                    OBJ_PAL[ocps & 0x3F] = value;
+                    if (ocps & 0x80) ocps = 0x80 | ((ocps + 1) & 0x3F);
+                    return;
+                case 0xFF55: // HDMA5: lanzar transferencia VRAM DMA
+                    doHDMATransfer(value);
+                    return;
+            }
         }
 
         // ============================================================
