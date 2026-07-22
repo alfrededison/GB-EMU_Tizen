@@ -130,15 +130,20 @@ void main_loop() {
     while (t_cycles_this_frame < T_CYCLES_PER_FRAME) {
         int cpu_t_cycles = global_cpu->step();
         if (cpu_t_cycles < 4) cpu_t_cycles = 4;
-        
-        global_ppu->step(cpu_t_cycles);
+
+        // En doble velocidad (CGB), la CPU corre 2x pero PPU y APU
+        // siguen a velocidad normal. El timer (DIV/TIMA) va con la CPU.
+        int ppu_t_cycles = global_mmu->isDoubleSpeed() ? cpu_t_cycles / 2
+                                                       : cpu_t_cycles;
+
+        global_ppu->step(ppu_t_cycles);
         global_timer->step(cpu_t_cycles);
-        
+
         if (!audio_muted) {
-            global_apu->tick(cpu_t_cycles);
+            global_apu->tick(ppu_t_cycles);
         }
-        
-        t_cycles_this_frame += cpu_t_cycles;
+
+        t_cycles_this_frame += ppu_t_cycles;
     }
 
     // Dibujar pantalla
