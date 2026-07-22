@@ -20,7 +20,18 @@ cpu::cpu(mmu& mmu_ref) : memory(mmu_ref)
 
     PC = 0x100;
     SP = 0xFFFE;
-    r8.fill(0);
+
+    // Estado de registros que deja el boot ROM de la DMG.
+    // A=0x01 identifica el hardware como Game Boy clásica: muchos juegos
+    // lo leen para decidir entre rutas DMG/CGB (con A=0 se cuelgan).
+    r8[A] = 0x01;
+    r8[F] = 0xB0;
+    r8[B] = 0x00;
+    r8[C] = 0x13;
+    r8[D] = 0x00;
+    r8[E] = 0xD8;
+    r8[H] = 0x01;
+    r8[L] = 0x4D;
 
     // 2. Inicialización de la tabla (Limpiar todo a nullptr)
     table_opcode.fill(nullptr);

@@ -37,7 +37,9 @@ set(CORE_SOURCES
     core/cartridge/cartridge.cpp
     core/cartridge/IMBC/type_cartridge/RomOnly.cpp
     core/cartridge/IMBC/type_cartridge/MBC1.cpp
+    core/cartridge/IMBC/type_cartridge/MBC2.cpp
     core/cartridge/IMBC/type_cartridge/MBC3.cpp
+    core/cartridge/IMBC/type_cartridge/MBC5.cpp
 )
 
 # ==============================================================================
