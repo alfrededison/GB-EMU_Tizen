@@ -2248,3 +2248,88 @@ events:
         - "/"
       CMAKE_FIND_ROOT_PATH: "/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot;/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot"
 ...
+
+---
+events:
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Platform/Emscripten.cmake:6 (find_file)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeSystemSpecificInformation.cmake:32 (include)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "file"
+    variable: "_EMSCRIPTEN_PLATFORM_MODULE"
+    description: "Path to a file."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "Platform/Emscripten.cmake"
+    candidate_directories:
+      - "/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cmake/Modules/"
+    searched_directories:
+      - "/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cmake/Modules/Platform.framework/Headers/Emscripten.cmake"
+    found: "/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cmake/Modules/Platform/Emscripten.cmake"
+    search_context:
+      ENV{PATH}:
+        - "/Users/hieunguyen/.local/share/virtualenvs/robot-8d-mjx95/bin"
+        - "/Users/hieunguyen/.rvm/gems/ruby-3.1.1/bin"
+        - "/Users/hieunguyen/.rvm/gems/ruby-3.1.1@global/bin"
+        - "/Users/hieunguyen/.rvm/rubies/ruby-3.1.1/bin"
+        - "/Users/hieunguyen/.tizen-extension-platform/server/sdktools/data/tools/ide/bin"
+        - "/Users/hieunguyen/.tizen-extension-platform/server/sdktools/data/tools"
+        - "/Users/hieunguyen/.tizen-extension-platform/server/sdktools/data"
+        - "/Users/hieunguyen/.tizen-extension-platform/server/sdktools/data"
+        - "/Users/hieunguyen/.tizen-extension-platform/server/sdktools/data"
+        - "/opt/homebrew/opt/rustup/bin"
+        - "/Users/hieunguyen/.cargo/bin"
+        - "/opt/homebrew/opt/openjdk@21/bin"
+        - "/Users/hieunguyen/.antigravity/antigravity/bin"
+        - "/Users/hieunguyen/.codeium/windsurf/bin"
+        - "/Users/hieunguyen/.local/bin"
+        - "/Users/hieunguyen/.pyenv/shims"
+        - "/Users/hieunguyen/.nvm/versions/node/v22.17.1/bin"
+        - "/opt/homebrew/bin"
+        - "/opt/homebrew/sbin"
+        - "/usr/local/bin"
+        - "/System/Cryptexes/App/usr/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin"
+        - "/pkg/env/global/bin"
+        - "/Library/Apple/usr/bin"
+        - "/Users/hieunguyen/.nvm/versions/node/v22.17.1/bin"
+        - "/Users/hieunguyen/.rvm/gems/ruby-3.1.1/bin"
+        - "/Users/hieunguyen/.rvm/gems/ruby-3.1.1@global/bin"
+        - "/Users/hieunguyen/.rvm/rubies/ruby-3.1.1/bin"
+        - "/opt/homebrew/opt/rustup/bin"
+        - "/Users/hieunguyen/.cargo/bin"
+        - "/opt/homebrew/opt/openjdk@21/bin"
+        - "/Users/hieunguyen/.antigravity/antigravity/bin"
+        - "/Users/hieunguyen/.codeium/windsurf/bin"
+        - "/Users/hieunguyen/.local/bin"
+        - "/Users/hieunguyen/Library/Application Support/Coursier/bin"
+        - "/Users/hieunguyen/.oh-my-zsh/custom/plugins/fzf-zsh-plugin/bin"
+        - "/Users/hieunguyen/.fzf/bin"
+        - "/Users/hieunguyen/.rvm/bin"
+        - "/Users/hieunguyen/Library/Android/sdk/platform-tools"
+        - "/Users/hieunguyen/Library/Android/sdk/tools"
+        - "/Users/hieunguyen/Library/Application Support/Coursier/bin"
+        - "/Users/hieunguyen/.oh-my-zsh/custom/plugins/fzf-zsh-plugin/bin"
+        - "/Users/hieunguyen/.rvm/bin"
+        - "/Users/hieunguyen/Library/Android/sdk/platform-tools"
+        - "/Users/hieunguyen/Library/Android/sdk/tools"
+      CMAKE_INSTALL_PREFIX: "/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/"
+      CMAKE_FIND_ROOT_PATH: "/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot"
+...

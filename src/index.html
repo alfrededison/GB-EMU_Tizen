@@ -308,6 +308,12 @@
                 <div id="game-menu-list"></div>
                 <div class="rom-select-hint">D-PAD/STICK = MOVE&nbsp;&nbsp;|&nbsp;&nbsp;OK/A = SELECT&nbsp;&nbsp;|&nbsp;&nbsp;BLUE = CLOSE</div>
             </div>
+            <div class="rom-select-overlay" id="confirm-overlay">
+                <div class="rom-select-title" id="confirm-title">CONFIRM</div>
+                <div id="confirm-message" style="font-size:14px;margin-bottom:16px;"></div>
+                <div id="confirm-list"></div>
+                <div class="rom-select-hint">D-PAD/STICK = MOVE&nbsp;&nbsp;|&nbsp;&nbsp;OK/A = SELECT&nbsp;&nbsp;|&nbsp;&nbsp;B = CANCEL</div>
+            </div>
         </div>
         
         <div class="controls" id="controls-hint">
@@ -416,7 +422,14 @@
     // ============================================================
     const romNameDisplay = document.getElementById('rom-name');
 
-    function loadRomData(data, fileName) {
+    // Identity of the ROM currently running - used as the save-state key.
+    // currentRomData is kept so a failed state restore can reload the ROM
+    // fresh instead of leaving the emulator half-restored.
+    let currentRomName = null;
+    let currentRomData = null;
+    let gameLoaded = false;
+
+    async function loadRomData(data, fileName) {
         try {
             Module.FS.writeFile('/game.gb', data);
             console.log("[JS] ROM escrita en FS virtual: " + data.length + " bytes");
@@ -425,11 +438,19 @@
                 console.log("[JS] ROM cargada correctamente.");
                 romNameDisplay.innerText = "Playing: " + fileName;
                 romNameDisplay.style.color = "#008800";
+                currentRomName = fileName;
+                currentRomData = data;
+                gameLoaded = true;
                 initAudioOnInteraction();
+                // If this ROM has a saved state, offer to continue from it
+                await offerSavedStateRestore(fileName);
             } else {
                 console.error("[JS] C++ reporta fallo al cargar la ROM.");
                 romNameDisplay.innerText = "Error loading ROM";
                 romNameDisplay.style.color = "#cc0000";
+                gameLoaded = false;
+                currentRomName = null;
+                currentRomData = null;
             }
         } catch (err) {
             console.error("[JS] Error con Module:", err);
@@ -774,12 +795,237 @@
     }
 
     // ============================================================
-    // GAME MENU (Resume / Change ROM / Exit App)
+    // CONFIRM DIALOG
+    // Generic promise-based question overlay, navigated with the D-pad
+    // like the other overlays. Resolves with the chosen option's label,
+    // or null when cancelled with B.
+    // ============================================================
+    let confirmActive = false;
+    let confirmOptions = [];
+    let confirmIndex = 0;
+    let confirmResolve = null;
+
+    function renderConfirmDialog() {
+        const list = document.getElementById('confirm-list');
+        list.innerHTML = confirmOptions.map((label, i) =>
+            `<div class="rom-select-item${i === confirmIndex ? ' selected' : ''}">${label}</div>`
+        ).join('');
+    }
+
+    function showConfirmDialog(title, message, options) {
+        return new Promise(resolve => {
+            // Never stack dialogs - treat a still-pending one as cancelled
+            if (confirmResolve) confirmResolve(null);
+            confirmOptions = options;
+            confirmIndex = 0;
+            confirmActive = true;
+            confirmResolve = resolve;
+            document.getElementById('confirm-title').textContent = title;
+            document.getElementById('confirm-message').textContent = message;
+            document.getElementById('confirm-overlay').classList.add('visible');
+            renderConfirmDialog();
+        });
+    }
+
+    function closeConfirmDialog(choice) {
+        confirmActive = false;
+        document.getElementById('confirm-overlay').classList.remove('visible');
+        const resolve = confirmResolve;
+        confirmResolve = null;
+        if (resolve) resolve(choice);
+    }
+
+    // Handles a GB button id while a confirm dialog is open. Returns true
+    // if it consumed the press (same swallow-on-keyup pattern as the others).
+    function handleConfirmDialogInput(id, down) {
+        if (!confirmActive || !down) return confirmActive;
+
+        if (id === 2) { // UP
+            confirmIndex = (confirmIndex - 1 + confirmOptions.length) % confirmOptions.length;
+            renderConfirmDialog();
+        } else if (id === 3) { // DOWN
+            confirmIndex = (confirmIndex + 1) % confirmOptions.length;
+            renderConfirmDialog();
+        } else if (id === 4 || id === 7) { // A or START -> confirm
+            closeConfirmDialog(confirmOptions[confirmIndex]);
+        } else if (id === 5) { // B -> cancel
+            closeConfirmDialog(null);
+        }
+        return true;
+    }
+
+    // ============================================================
+    // SAVE STATES
+    // The C++ core serializes the full machine state (CPU, memory,
+    // PPU, timer, APU, cartridge RAM + mapper) into a byte blob.
+    // Persistence: a file in the app's private storage on Tizen
+    // (wgt-private/states/), localStorage (base64) in browsers.
+    // Keyed by ROM file name; one slot per ROM.
+    // ============================================================
+    const SAVE_STATES_DIR = 'wgt-private/states';
+    const SAVE_STATE_KEY_PREFIX = 'gbSaveState:';
+
+    function canUseTizenFs() {
+        return isTizen && tizen.filesystem && !!tizen.filesystem.openFile;
+    }
+
+    function saveStateFilePath(romName) {
+        return SAVE_STATES_DIR + '/' + romName.replace(/[^\w.-]/g, '_') + '.state';
+    }
+
+    function bytesToBase64(bytes) {
+        let bin = '';
+        const CHUNK = 0x8000;
+        for (let i = 0; i < bytes.length; i += CHUNK) {
+            bin += String.fromCharCode.apply(null, bytes.subarray(i, i + CHUNK));
+        }
+        return btoa(bin);
+    }
+
+    function base64ToBytes(b64) {
+        const bin = atob(b64);
+        const out = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+        return out;
+    }
+
+    function persistSavedState(romName, bytes) {
+        if (canUseTizenFs()) {
+            try { tizen.filesystem.createDirectory(SAVE_STATES_DIR); } catch (e) { /* already exists */ }
+            const handle = tizen.filesystem.openFile(saveStateFilePath(romName), 'w');
+            try { handle.writeData(bytes); } finally { handle.close(); }
+        } else {
+            localStorage.setItem(SAVE_STATE_KEY_PREFIX + romName, bytesToBase64(bytes));
+        }
+    }
+
+    // Returns the saved state bytes for a ROM, or null if there are none.
+    function readSavedState(romName) {
+        if (canUseTizenFs()) {
+            try {
+                return readCachedRom(saveStateFilePath(romName)); // generic binary file reader
+            } catch (err) {
+                return null; // no state saved yet
+            }
+        }
+        try {
+            const b64 = localStorage.getItem(SAVE_STATE_KEY_PREFIX + romName);
+            return b64 ? base64ToBytes(b64) : null;
+        } catch (e) {
+            return null;
+        }
+    }
+
+    // Transient status line under the cartridge slot, reverts to
+    // "Playing: <rom>" a few seconds later.
+    let statusResetTimer = null;
+    function showStatus(text, color) {
+        romNameDisplay.innerText = text;
+        romNameDisplay.style.color = color || '#555';
+        clearTimeout(statusResetTimer);
+        statusResetTimer = setTimeout(() => {
+            if (gameLoaded && currentRomName) {
+                romNameDisplay.innerText = 'Playing: ' + currentRomName;
+                romNameDisplay.style.color = '#008800';
+            }
+        }, 3000);
+    }
+
+    // Snapshot the running game and persist it. Returns true on success.
+    function doSaveState() {
+        if (!gameLoaded || !currentRomName) {
+            showStatus('No game running', '#cc0000');
+            return false;
+        }
+        try {
+            const size = Module._save_state();
+            if (!size) throw new Error('save_state() returned 0');
+            const ptr = Module._get_state_data();
+            const bytes = Module.HEAPU8.slice(ptr, ptr + size);
+            persistSavedState(currentRomName, bytes);
+            console.log('[STATE] Saved', size, 'bytes for', currentRomName);
+            showStatus('State saved', '#008800');
+            return true;
+        } catch (err) {
+            console.error('[STATE] Save failed:', err);
+            showStatus('Save state failed', '#cc0000');
+            return false;
+        }
+    }
+
+    // Push previously saved bytes into the running emulator.
+    function applySavedState(bytes) {
+        try {
+            const ptr = Module._malloc(bytes.length);
+            Module.HEAPU8.set(bytes, ptr);
+            const ok = Module._load_state(ptr, bytes.length);
+            Module._free(ptr);
+            if (!ok) throw new Error('C++ rejected the state');
+            showStatus('State restored', '#008800');
+            return true;
+        } catch (err) {
+            console.error('[STATE] Restore failed:', err);
+            // A partially applied state can leave the machine inconsistent -
+            // reload the ROM from scratch so the game at least boots cleanly.
+            if (currentRomData) {
+                try {
+                    Module.FS.writeFile('/game.gb', currentRomData);
+                    Module.ccall('load_rom_from_js', 'number', ['string'], ['/game.gb']);
+                } catch (e) {
+                    console.error('[STATE] ROM reload after failed restore also failed:', e);
+                }
+            }
+            showStatus('Restore failed - started fresh', '#cc0000');
+            return false;
+        }
+    }
+
+    // "Load State" menu entry: warns that current progress is discarded.
+    async function restoreSavedStateWithConfirm() {
+        if (!gameLoaded || !currentRomName) {
+            showStatus('No game running', '#cc0000');
+            return;
+        }
+        const saved = readSavedState(currentRomName);
+        if (!saved) {
+            showStatus('No saved state for this game', '#cc0000');
+            return;
+        }
+        const choice = await showConfirmDialog('LOAD STATE',
+            'Discard current progress and restore the saved state?',
+            ['Restore saved state', 'Cancel']);
+        if (choice === 'Restore saved state') applySavedState(saved);
+    }
+
+    // Called right after a ROM boots: offer to continue from its saved state.
+    async function offerSavedStateRestore(romName) {
+        const saved = readSavedState(romName);
+        if (!saved) return;
+        const choice = await showConfirmDialog('SAVED STATE FOUND',
+            'Continue from your saved state?',
+            ['Continue saved state', 'Start from beginning']);
+        if (choice === 'Continue saved state') applySavedState(saved);
+    }
+
+    // Before leaving the running game (Change ROM / Exit App): offer to
+    // save first. Returns true if the caller should proceed, false if the
+    // user cancelled (or saving failed - don't silently lose progress).
+    async function confirmSaveBeforeLeaving(actionLabel) {
+        if (!gameLoaded || !currentRomName) return true; // nothing to lose
+        const choice = await showConfirmDialog('SAVE STATE?',
+            'Save your progress before ' + actionLabel + '?',
+            ['Save', 'Discard', 'Cancel']);
+        if (choice === 'Save') return doSaveState();
+        return choice === 'Discard';
+    }
+
+    // ============================================================
+    // GAME MENU (Resume / Save/Load State / Change ROM / Exit App)
     // Opened with the Blue remote button, or SELECT+START held together
     // on a gamepad. Lets you back out of a running ROM without having to
     // restart the whole app.
     // ============================================================
-    const GAME_MENU_OPTIONS = ['Resume', 'Change ROM', 'Download ROMs (Wi-Fi)', 'Set ROM Server', 'Exit App'];
+    const GAME_MENU_OPTIONS = ['Resume', 'Save State', 'Load State', 'Change ROM', 'Download ROMs (Wi-Fi)', 'Set ROM Server', 'Exit App'];
     let gameMenuActive = false;
     let gameMenuIndex  = 0;
 
@@ -791,7 +1037,7 @@
     }
 
     function openGameMenu() {
-        if (romSelectActive || serverConfigActive) return; // don't stack over the ROM picker / server editor
+        if (romSelectActive || serverConfigActive || confirmActive) return; // don't stack over the ROM picker / server editor / a dialog
         gameMenuActive = true;
         gameMenuIndex = 0;
         document.getElementById('game-menu-overlay').classList.add('visible');
@@ -823,14 +1069,26 @@
         const choice = GAME_MENU_OPTIONS[gameMenuIndex];
         if (choice === 'Resume') {
             closeGameMenu();
+        } else if (choice === 'Save State') {
+            closeGameMenu();
+            doSaveState();
+        } else if (choice === 'Load State') {
+            closeGameMenu();
+            await restoreSavedStateWithConfirm();
         } else if (choice === 'Change ROM') {
             closeGameMenu();
-            await openRomChangeMenu();
+            if (await confirmSaveBeforeLeaving('changing ROM')) {
+                await openRomChangeMenu();
+            }
         } else if (choice === 'Download ROMs (Wi-Fi)') {
             closeGameMenu();
             try {
                 const count = await downloadRomsFromServer();
-                if (count > 0) await openRomChangeMenu();
+                // The picker loads a new ROM, so this path also discards
+                // the running game - same save-first offer as "Change ROM".
+                if (count > 0 && await confirmSaveBeforeLeaving('changing ROM')) {
+                    await openRomChangeMenu();
+                }
             } catch (err) {
                 console.error('[CACHE] Download failed:', err);
                 romNameDisplay.innerText = 'Download failed (is the server on?)';
@@ -840,7 +1098,10 @@
             closeGameMenu();
             openServerConfig();
         } else if (choice === 'Exit App') {
-            exitApp();
+            closeGameMenu();
+            if (await confirmSaveBeforeLeaving('exiting')) {
+                exitApp();
+            }
         }
     }
 
@@ -1040,8 +1301,9 @@
     function pressBtn(id, down) {
         id = parseInt(id);
 
-        // While the ROM picker, game menu or server address editor is open,
-        // D-pad/A/START navigate those instead of controlling the emulator.
+        // While a confirm dialog, the ROM picker, game menu or server address
+        // editor is open, D-pad/A/START navigate those instead of the emulator.
+        if (handleConfirmDialogInput(id, down)) return;
         if (handleServerConfigInput(id, down)) return;
         if (handleRomSelectorInput(id, down)) return;
         if (handleGameMenuInput(id, down)) return;

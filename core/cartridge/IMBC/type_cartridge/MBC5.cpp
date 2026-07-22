@@ -52,3 +52,18 @@ void MBC5::writeRAM(uint16_t address, uint8_t value) {
     uint32_t offset = (static_cast<uint32_t>(ramBank) * 0x2000u) + (address - 0xA000);
     if (offset < ram.size()) ram[offset] = value;
 }
+
+// ============================================================
+// SAVE STATES
+// ============================================================
+void MBC5::saveState(StateWriter& out) const {
+    out.write(romBank);
+    out.write(ramBank);
+    out.write(ramEnabled);
+}
+
+void MBC5::loadState(StateReader& in) {
+    romBank    = in.read<uint16_t>();
+    ramBank    = in.read<uint8_t>();
+    ramEnabled = in.read<bool>();
+}

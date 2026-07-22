@@ -4,6 +4,7 @@
 CMakeFiles/gb-emu.dir/core/cartridge/IMBC/type_cartridge/MBC1.cpp.o: /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cartridge/IMBC/type_cartridge/MBC1.cpp \
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cartridge/IMBC/IMBC.h \
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cartridge/IMBC/type_cartridge/MBC1.h \
+  /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/state/state.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/alloca.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/bits/alltypes.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/bits/errno.h \
@@ -690,6 +691,7 @@ CMakeFiles/gb-emu.dir/core/cartridge/IMBC/type_cartridge/MBC1.cpp.o: /Users/hieu
 CMakeFiles/gb-emu.dir/core/cartridge/IMBC/type_cartridge/MBC2.cpp.o: /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cartridge/IMBC/type_cartridge/MBC2.cpp \
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cartridge/IMBC/IMBC.h \
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cartridge/IMBC/type_cartridge/MBC2.h \
+  /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/state/state.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/alloca.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/bits/alltypes.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/bits/errno.h \
@@ -1376,6 +1378,7 @@ CMakeFiles/gb-emu.dir/core/cartridge/IMBC/type_cartridge/MBC2.cpp.o: /Users/hieu
 CMakeFiles/gb-emu.dir/core/cartridge/IMBC/type_cartridge/MBC3.cpp.o: /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cartridge/IMBC/type_cartridge/MBC3.cpp \
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cartridge/IMBC/IMBC.h \
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cartridge/IMBC/type_cartridge/MBC3.h \
+  /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/state/state.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/alloca.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/bits/alltypes.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/bits/errno.h \
@@ -2062,6 +2065,7 @@ CMakeFiles/gb-emu.dir/core/cartridge/IMBC/type_cartridge/MBC3.cpp.o: /Users/hieu
 CMakeFiles/gb-emu.dir/core/cartridge/IMBC/type_cartridge/MBC5.cpp.o: /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cartridge/IMBC/type_cartridge/MBC5.cpp \
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cartridge/IMBC/IMBC.h \
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cartridge/IMBC/type_cartridge/MBC5.h \
+  /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/state/state.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/alloca.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/bits/alltypes.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/bits/errno.h \
@@ -2748,6 +2752,7 @@ CMakeFiles/gb-emu.dir/core/cartridge/IMBC/type_cartridge/MBC5.cpp.o: /Users/hieu
 CMakeFiles/gb-emu.dir/core/cartridge/IMBC/type_cartridge/RomOnly.cpp.o: /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cartridge/IMBC/type_cartridge/RomOnly.cpp \
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cartridge/IMBC/IMBC.h \
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cartridge/IMBC/type_cartridge/RomOnly.h \
+  /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/state/state.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/alloca.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/bits/alltypes.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/bits/errno.h \
@@ -3440,6 +3445,7 @@ CMakeFiles/gb-emu.dir/core/cartridge/cartridge.cpp.o: /Users/hieunguyen/code/per
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cartridge/IMBC/type_cartridge/MBC5.h \
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cartridge/IMBC/type_cartridge/RomOnly.h \
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cartridge/cartridge.h \
+  /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/state/state.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/alloca.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/bits/alltypes.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/bits/errno.h \
@@ -4125,6 +4131,7 @@ CMakeFiles/gb-emu.dir/core/cartridge/cartridge.cpp.o: /Users/hieunguyen/code/per
 
 CMakeFiles/gb-emu.dir/core/cpu/APU/apu.cpp.o: /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cpu/APU/apu.cpp \
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cpu/APU/apu.h \
+  /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/state/state.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/alloca.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/bits/alltypes.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/bits/errno.h \
@@ -4160,6 +4167,7 @@ CMakeFiles/gb-emu.dir/core/cpu/APU/apu.cpp.o: /Users/hieunguyen/code/personal/GB
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/generate.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/generate_n.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/half_positive.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/in_out_result.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/includes.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/inplace_merge.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/is_heap.h \
@@ -4171,6 +4179,7 @@ CMakeFiles/gb-emu.dir/core/cpu/APU/apu.cpp.o: /Users/hieunguyen/code/personal/GB
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/iter_swap.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/iterator_operations.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/lexicographical_compare.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/lexicographical_compare_three_way.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/lower_bound.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/make_heap.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/make_projected.h \
@@ -4197,6 +4206,8 @@ CMakeFiles/gb-emu.dir/core/cpu/APU/apu.cpp.o: /Users/hieunguyen/code/personal/GB
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/pstl.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/push_heap.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/radix_sort.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/ranges_copy.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/ranges_copy_n.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/ranges_iterator_concept.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/remove.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/remove_copy.h \
@@ -4225,6 +4236,7 @@ CMakeFiles/gb-emu.dir/core/cpu/APU/apu.cpp.o: /Users/hieunguyen/code/personal/GB
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/stable_partition.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/stable_sort.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/swap_ranges.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/three_way_comp_ref_type.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/transform.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/unique.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/unique_copy.h \
@@ -4255,6 +4267,12 @@ CMakeFiles/gb-emu.dir/core/cpu/APU/apu.cpp.o: /Users/hieunguyen/code/personal/GB
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__bit/countr.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__bit/invert_if.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__bit/popcount.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__bit_reference \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__charconv/tables.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__charconv/to_chars_base_10.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__charconv/to_chars_integral.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__charconv/to_chars_result.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__charconv/traits.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__chrono/convert_to_timespec.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__chrono/duration.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__chrono/high_resolution_clock.h \
@@ -4288,6 +4306,7 @@ CMakeFiles/gb-emu.dir/core/cpu/APU/apu.cpp.o: /Users/hieunguyen/code/personal/GB
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__concepts/semiregular.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__concepts/swappable.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__concepts/totally_ordered.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__condition_variable/condition_variable.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__config \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__config_site \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__configuration/abi.h \
@@ -4301,12 +4320,14 @@ CMakeFiles/gb-emu.dir/core/cpu/APU/apu.cpp.o: /Users/hieunguyen/code/personal/GB
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__cstddef/ptrdiff_t.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__cstddef/size_t.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__debug_utils/randomize_range.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__debug_utils/sanitizers.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__debug_utils/strict_weak_ordering_check.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__exception/exception.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__exception/exception_ptr.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__exception/nested_exception.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__exception/operations.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__exception/terminate.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__format/enable_insertable.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__functional/binary_function.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__functional/hash.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__functional/identity.h \
@@ -4331,13 +4352,17 @@ CMakeFiles/gb-emu.dir/core/cpu/APU/apu.cpp.o: /Users/hieunguyen/code/personal/GB
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__fwd/sstream.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__fwd/streambuf.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__fwd/string.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__fwd/string_view.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__fwd/subrange.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__fwd/tuple.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__fwd/variant.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__fwd/vector.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__ios/fpos.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__iterator/access.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__iterator/advance.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__iterator/aliasing_iterator.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__iterator/back_insert_iterator.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__iterator/bounded_iter.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__iterator/concepts.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__iterator/data.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__iterator/default_sentinel.h \
@@ -4363,7 +4388,22 @@ CMakeFiles/gb-emu.dir/core/cpu/APU/apu.cpp.o: /Users/hieunguyen/code/personal/GB
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__iterator/reverse_iterator.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__iterator/segmented_iterator.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__iterator/size.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__iterator/static_bounded_iter.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__iterator/unreachable_sentinel.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__iterator/wrap_iter.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__locale \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__locale_dir/check_grouping.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__locale_dir/get_c_locale.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__locale_dir/locale_base_api.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__locale_dir/locale_base_api/bsd_locale_fallbacks.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__locale_dir/messages.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__locale_dir/money.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__locale_dir/num.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__locale_dir/pad_and_output.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__locale_dir/scan_keyword.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__locale_dir/time.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__locale_dir/wbuffer_convert.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__locale_dir/wstring_convert.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__log_hardening_failure \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__math/abs.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__math/copysign.h \
@@ -4402,16 +4442,26 @@ CMakeFiles/gb-emu.dir/core/cpu/APU/apu.cpp.o: /Users/hieunguyen/code/personal/GB
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__memory/destruct_n.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__memory/inout_ptr.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__memory/is_sufficiently_aligned.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__memory/noexcept_move_assign_container.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__memory/out_ptr.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__memory/pointer_traits.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__memory/raw_storage_iterator.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__memory/shared_count.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__memory/shared_ptr.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__memory/swap_allocator.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__memory/temp_value.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__memory/temporary_buffer.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__memory/uninitialized_algorithms.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__memory/unique_ptr.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__memory/unique_temporary_buffer.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__memory/uses_allocator.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__memory_resource/memory_resource.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__memory_resource/polymorphic_allocator.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__mutex/lock_guard.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__mutex/mutex.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__mutex/once_flag.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__mutex/tag_types.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__mutex/unique_lock.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__new/align_val_t.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__new/allocate.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__new/exceptions.h \
@@ -4427,17 +4477,28 @@ CMakeFiles/gb-emu.dir/core/cpu/APU/apu.cpp.o: /Users/hieunguyen/code/personal/GB
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__random/uniform_int_distribution.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__ranges/access.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__ranges/concepts.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__ranges/container_compatible_range.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__ranges/dangling.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__ranges/data.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__ranges/empty.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__ranges/enable_borrowed_range.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__ranges/enable_view.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__ranges/from_range.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__ranges/size.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__ranges/subrange.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__ranges/view_interface.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__split_buffer \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__std_mbstate_t.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__string/char_traits.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__string/constexpr_c_functions.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__string/extern_template_lists.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__system_error/errc.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__system_error/error_category.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__system_error/error_code.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__system_error/error_condition.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__system_error/system_error.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__system_error/throw_system_error.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__thread/id.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__thread/poll_with_backoff.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__thread/support.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__thread/support/pthread.h \
@@ -4461,6 +4522,7 @@ CMakeFiles/gb-emu.dir/core/cpu/APU/apu.cpp.o: /Users/hieunguyen/code/personal/GB
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__type_traits/common_type.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__type_traits/conditional.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__type_traits/conjunction.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__type_traits/container_traits.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__type_traits/copy_cv.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__type_traits/copy_cvref.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__type_traits/datasizeof.h \
@@ -4478,6 +4540,7 @@ CMakeFiles/gb-emu.dir/core/cpu/APU/apu.cpp.o: /Users/hieunguyen/code/personal/GB
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__type_traits/invoke.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__type_traits/is_abstract.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__type_traits/is_aggregate.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__type_traits/is_allocator.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__type_traits/is_always_bitcastable.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__type_traits/is_arithmetic.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__type_traits/is_array.h \
@@ -4538,6 +4601,7 @@ CMakeFiles/gb-emu.dir/core/cpu/APU/apu.cpp.o: /Users/hieunguyen/code/personal/GB
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__type_traits/is_void.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__type_traits/is_volatile.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__type_traits/lazy.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__type_traits/make_32_64_or_128_bit.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__type_traits/make_const_lvalue_ref.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__type_traits/make_signed.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__type_traits/make_unsigned.h \
@@ -4577,23 +4641,35 @@ CMakeFiles/gb-emu.dir/core/cpu/APU/apu.cpp.o: /Users/hieunguyen/code/personal/GB
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__utility/is_pointer_in_range.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__utility/is_valid_range.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__utility/move.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__utility/no_destroy.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__utility/pair.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__utility/piecewise_construct.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__utility/private_constructor_tag.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__utility/rel_ops.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__utility/scope_guard.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__utility/swap.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__utility/unreachable.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__variant/monostate.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__vector/comparison.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__vector/container_traits.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__vector/pmr.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__vector/swap.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__vector/vector.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__vector/vector_bool.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__verbose_abort \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__verbose_trap \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/algorithm \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/array \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/atomic \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/bit \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/cctype \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/cerrno \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/climits \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/clocale \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/cmath \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/compare \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/concepts \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/cstdarg \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/cstddef \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/cstdint \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/cstdio \
@@ -4606,11 +4682,14 @@ CMakeFiles/gb-emu.dir/core/cpu/APU/apu.cpp.o: /Users/hieunguyen/code/personal/GB
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/errno.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/exception \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/initializer_list \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/ios \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/iosfwd \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/iterator \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/limits \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/locale \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/math.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/memory \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/mutex \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/new \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/optional \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/ratio \
@@ -4618,26 +4697,35 @@ CMakeFiles/gb-emu.dir/core/cpu/APU/apu.cpp.o: /Users/hieunguyen/code/personal/GB
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/stdexcept \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/stdio.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/stdlib.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/streambuf \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/string \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/string.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/string_view \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/system_error \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/tuple \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/type_traits \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/typeinfo \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/utility \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/variant \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/vector \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/version \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/wchar.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/wctype.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/compat/math.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/compat/stdarg.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/compat/stdlib.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/compat/string.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/compat/time.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/compat/xlocale.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/ctype.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/errno.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/features.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/limits.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/locale.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/math.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/pthread.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/sched.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/stdarg.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/stddef.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/stdint.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/stdio.h \
@@ -4648,6 +4736,12 @@ CMakeFiles/gb-emu.dir/core/cpu/APU/apu.cpp.o: /Users/hieunguyen/code/personal/GB
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/wasi/api.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/wchar.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/wctype.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/llvm/lib/clang/23/include/__stdarg___gnuc_va_list.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/llvm/lib/clang/23/include/__stdarg___va_copy.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/llvm/lib/clang/23/include/__stdarg_header_macro.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/llvm/lib/clang/23/include/__stdarg_va_arg.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/llvm/lib/clang/23/include/__stdarg_va_copy.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/llvm/lib/clang/23/include/__stdarg_va_list.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/llvm/lib/clang/23/include/__stddef_header_macro.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/llvm/lib/clang/23/include/__stddef_max_align_t.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/llvm/lib/clang/23/include/__stddef_null.h \
@@ -4657,6 +4751,7 @@ CMakeFiles/gb-emu.dir/core/cpu/APU/apu.cpp.o: /Users/hieunguyen/code/personal/GB
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/llvm/lib/clang/23/include/__stddef_size_t.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/llvm/lib/clang/23/include/__stddef_wchar_t.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/llvm/lib/clang/23/include/limits.h \
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/llvm/lib/clang/23/include/stdarg.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/llvm/lib/clang/23/include/stddef.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/llvm/lib/clang/23/include/stdint.h
 
@@ -4665,6 +4760,7 @@ CMakeFiles/gb-emu.dir/core/cpu/cpu.cpp.o: /Users/hieunguyen/code/personal/GB-EMU
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cartridge/cartridge.h \
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cpu/cpu.h \
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cpu/mmu/mmu.h \
+  /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/state/state.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/alloca.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/bits/alltypes.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/bits/errno.h \
@@ -5353,6 +5449,7 @@ CMakeFiles/gb-emu.dir/core/cpu/mmu/mmu.cpp.o: /Users/hieunguyen/code/personal/GB
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cartridge/cartridge.h \
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cpu/APU/apu.h \
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cpu/mmu/mmu.h \
+  /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/state/state.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/alloca.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/bits/alltypes.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/bits/errno.h \
@@ -6041,6 +6138,7 @@ CMakeFiles/gb-emu.dir/core/cpu/ppu/ppu.cpp.o: /Users/hieunguyen/code/personal/GB
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cartridge/cartridge.h \
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cpu/mmu/mmu.h \
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cpu/ppu/ppu.h \
+  /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/state/state.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/alloca.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/bits/alltypes.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/bits/errno.h \
@@ -6729,6 +6827,7 @@ CMakeFiles/gb-emu.dir/core/cpu/timer/timer.cpp.o: /Users/hieunguyen/code/persona
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cartridge/cartridge.h \
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cpu/mmu/mmu.h \
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cpu/timer/timer.h \
+  /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/state/state.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/alloca.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/bits/alltypes.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/bits/errno.h \
@@ -7420,6 +7519,7 @@ CMakeFiles/gb-emu.dir/emc_main.cpp.o: /Users/hieunguyen/code/personal/GB-EMU_Tiz
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cpu/mmu/mmu.h \
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cpu/ppu/ppu.h \
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cpu/timer/timer.h \
+  /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/state/state.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/alloca.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/bits/alltypes.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/bits/errno.h \
@@ -8506,6 +8606,8 @@ CMakeFiles/gb-emu.dir/emc_main.cpp.o: /Users/hieunguyen/code/personal/GB-EMU_Tiz
 
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__ranges/view_interface.h:
 
+/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__ranges/size.h:
+
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__ranges/from_range.h:
 
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__ranges/empty.h:
@@ -8914,8 +9016,6 @@ CMakeFiles/gb-emu.dir/emc_main.cpp.o: /Users/hieunguyen/code/personal/GB-EMU_Tiz
 
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__filesystem/filesystem_error.h:
 
-/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__filesystem/file_type.h:
-
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/emscripten.h:
 
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__charconv/tables.h:
@@ -8933,22 +9033,6 @@ CMakeFiles/gb-emu.dir/emc_main.cpp.o: /Users/hieunguyen/code/personal/GB-EMU_Tiz
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__utility/empty.h:
 
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__exception/terminate.h:
-
-/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/exception:
-
-/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/replace_if.h:
-
-/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__iterator/default_sentinel.h:
-
-/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/time.h:
-
-/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/fill.h:
-
-/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__compare/compare_three_way_result.h:
-
-/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__bit/bit_log2.h:
-
-/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__exception/nested_exception.h:
 
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__utility/in_place.h:
 
@@ -8976,20 +9060,6 @@ CMakeFiles/gb-emu.dir/emc_main.cpp.o: /Users/hieunguyen/code/personal/GB-EMU_Tiz
 
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__debug_utils/randomize_range.h:
 
-/Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cpu/ppu/ppu.cpp:
-
-/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__vector/swap.h:
-
-/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__concepts/copyable.h:
-
-/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__atomic/is_always_lock_free.h:
-
-/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__concepts/relation.h:
-
-/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__utility/auto_cast.h:
-
-/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__cstddef/size_t.h:
-
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__compare/compare_three_way.h:
 
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/partition_copy.h:
@@ -9009,6 +9079,20 @@ CMakeFiles/gb-emu.dir/emc_main.cpp.o: /Users/hieunguyen/code/personal/GB-EMU_Tiz
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__concepts/totally_ordered.h:
 
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__concepts/same_as.h:
+
+/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__utility/auto_cast.h:
+
+/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__cstddef/size_t.h:
+
+/Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cpu/ppu/ppu.cpp:
+
+/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__vector/swap.h:
+
+/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__concepts/copyable.h:
+
+/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__atomic/is_always_lock_free.h:
+
+/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__concepts/relation.h:
 
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__ostream/put_character_sequence.h:
 
@@ -9216,16 +9300,6 @@ CMakeFiles/gb-emu.dir/emc_main.cpp.o: /Users/hieunguyen/code/personal/GB-EMU_Tiz
 
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/find_end.h:
 
-/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__memory/allocator.h:
-
-/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__type_traits/is_nothrow_assignable.h:
-
-/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__type_traits/is_implicitly_default_constructible.h:
-
-/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__concepts/class_or_enum.h:
-
-/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/set_intersection.h:
-
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__type_traits/is_char_like_type.h:
 
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__math/error_functions.h:
@@ -9280,6 +9354,12 @@ CMakeFiles/gb-emu.dir/emc_main.cpp.o: /Users/hieunguyen/code/personal/GB-EMU_Tiz
 
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__filesystem/perms.h:
 
+/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/time.h:
+
+/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__compare/compare_three_way_result.h:
+
+/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/fill.h:
+
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/ranges_iterator_concept.h:
 
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/pop_heap.h:
@@ -9305,6 +9385,12 @@ CMakeFiles/gb-emu.dir/emc_main.cpp.o: /Users/hieunguyen/code/personal/GB-EMU_Tiz
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__memory/array_cookie.h:
 
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__math/gamma.h:
+
+/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/exception:
+
+/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__iterator/default_sentinel.h:
+
+/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/replace_if.h:
 
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/partition.h:
 
@@ -9350,15 +9436,13 @@ CMakeFiles/gb-emu.dir/emc_main.cpp.o: /Users/hieunguyen/code/personal/GB-EMU_Tiz
 
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/copy.h:
 
+/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__exception/nested_exception.h:
+
+/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__bit/bit_log2.h:
+
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/count_if.h:
 
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/radix_sort.h:
-
-/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__configuration/compiler.h:
-
-/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__tuple/tuple_like_no_subrange.h:
-
-/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/is_sorted_until.h:
 
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__vector/comparison.h:
 
@@ -9369,6 +9453,16 @@ CMakeFiles/gb-emu.dir/emc_main.cpp.o: /Users/hieunguyen/code/personal/GB-EMU_Tiz
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/new:
 
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/remove.h:
+
+/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__memory/allocator.h:
+
+/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/set_intersection.h:
+
+/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__type_traits/is_nothrow_assignable.h:
+
+/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__type_traits/is_implicitly_default_constructible.h:
+
+/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__concepts/class_or_enum.h:
 
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__type_traits/void_t.h:
 
@@ -9381,6 +9475,8 @@ CMakeFiles/gb-emu.dir/emc_main.cpp.o: /Users/hieunguyen/code/personal/GB-EMU_Tiz
 /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cpu/mmu/mmu.h:
 
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__exception/exception.h:
+
+/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__configuration/compiler.h:
 
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__functional/invoke.h:
 
@@ -9522,8 +9618,6 @@ CMakeFiles/gb-emu.dir/emc_main.cpp.o: /Users/hieunguyen/code/personal/GB-EMU_Tiz
 
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__charconv/traits.h:
 
-/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__ranges/size.h:
-
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/emscripten/em_macros.h:
 
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/emscripten/em_asm.h:
@@ -9540,14 +9634,22 @@ CMakeFiles/gb-emu.dir/emc_main.cpp.o: /Users/hieunguyen/code/personal/GB-EMU_Tiz
 
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/unique_copy.h:
 
-/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/nth_element.h:
-
-/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/adjacent_find.h:
-
-/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/bits/alltypes.h:
-
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__memory/allocator_destructor.h:
 
 /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__tuple/find_index.h:
 
 /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cartridge/IMBC/IMBC.h:
+
+/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/nth_element.h:
+
+/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/bits/alltypes.h:
+
+/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__tuple/tuple_like_no_subrange.h:
+
+/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/is_sorted_until.h:
+
+/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__filesystem/file_type.h:
+
+/Users/hieunguyen/code/personal/GB-EMU_Tizen/core/state/state.h:
+
+/opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__algorithm/adjacent_find.h:

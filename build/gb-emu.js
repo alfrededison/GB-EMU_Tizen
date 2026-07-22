@@ -279,13 +279,6 @@ function assert(condition, text) {
 
 // We used to include malloc/free by default in the past. Show a helpful error in
 // builds with assertions.
-function _malloc() {
-  abort('malloc() called but not included in the build - add `_malloc` to EXPORTED_FUNCTIONS');
-}
-function _free() {
-  // Show a helpful error since we used to include free by default in the past.
-  abort('free() called but not included in the build - add `_free` to EXPORTED_FUNCTIONS');
-}
 
 /**
  * Indicates whether filename is delivered via file protocol (as opposed to http/https)
@@ -5303,7 +5296,7 @@ function checkIncomingModuleAPI() {
   ignoredModuleProp('wasmBinary');
 }
 var ASM_CONSTS = {
-  85764: () => { if (typeof drawCanvas === 'function') { drawCanvas(); } }
+  86084: () => { if (typeof drawCanvas === 'function') { drawCanvas(); } }
 };
 
 // Imports from the Wasm binary.
@@ -5314,12 +5307,17 @@ var _get_audio_buffer = Module['_get_audio_buffer'] = makeInvalidEarlyAccess('_g
 var _get_audio_samples_available = Module['_get_audio_samples_available'] = makeInvalidEarlyAccess('_get_audio_samples_available');
 var _fill_audio_buffer = Module['_fill_audio_buffer'] = makeInvalidEarlyAccess('_fill_audio_buffer');
 var _set_audio_muted = Module['_set_audio_muted'] = makeInvalidEarlyAccess('_set_audio_muted');
+var _save_state = Module['_save_state'] = makeInvalidEarlyAccess('_save_state');
+var _get_state_data = Module['_get_state_data'] = makeInvalidEarlyAccess('_get_state_data');
+var _load_state = Module['_load_state'] = makeInvalidEarlyAccess('_load_state');
 var _load_rom_from_js = Module['_load_rom_from_js'] = makeInvalidEarlyAccess('_load_rom_from_js');
 var _main = Module['_main'] = makeInvalidEarlyAccess('_main');
 var _fflush = makeInvalidEarlyAccess('_fflush');
 var _emscripten_stack_get_end = makeInvalidEarlyAccess('_emscripten_stack_get_end');
 var _emscripten_stack_get_base = makeInvalidEarlyAccess('_emscripten_stack_get_base');
 var _strerror = makeInvalidEarlyAccess('_strerror');
+var _malloc = Module['_malloc'] = makeInvalidEarlyAccess('_malloc');
+var _free = Module['_free'] = makeInvalidEarlyAccess('_free');
 var _emscripten_stack_init = makeInvalidEarlyAccess('_emscripten_stack_init');
 var _emscripten_stack_get_free = makeInvalidEarlyAccess('_emscripten_stack_get_free');
 var __emscripten_stack_restore = makeInvalidEarlyAccess('__emscripten_stack_restore');
@@ -5338,12 +5336,17 @@ function assignWasmExports(wasmExports) {
   assert(typeof wasmExports['get_audio_samples_available'] != 'undefined', 'missing Wasm export: get_audio_samples_available');
   assert(typeof wasmExports['fill_audio_buffer'] != 'undefined', 'missing Wasm export: fill_audio_buffer');
   assert(typeof wasmExports['set_audio_muted'] != 'undefined', 'missing Wasm export: set_audio_muted');
+  assert(typeof wasmExports['save_state'] != 'undefined', 'missing Wasm export: save_state');
+  assert(typeof wasmExports['get_state_data'] != 'undefined', 'missing Wasm export: get_state_data');
+  assert(typeof wasmExports['load_state'] != 'undefined', 'missing Wasm export: load_state');
   assert(typeof wasmExports['load_rom_from_js'] != 'undefined', 'missing Wasm export: load_rom_from_js');
   assert(typeof wasmExports['__main_argc_argv'] != 'undefined', 'missing Wasm export: __main_argc_argv');
   assert(typeof wasmExports['fflush'] != 'undefined', 'missing Wasm export: fflush');
   assert(typeof wasmExports['emscripten_stack_get_end'] != 'undefined', 'missing Wasm export: emscripten_stack_get_end');
   assert(typeof wasmExports['emscripten_stack_get_base'] != 'undefined', 'missing Wasm export: emscripten_stack_get_base');
   assert(typeof wasmExports['strerror'] != 'undefined', 'missing Wasm export: strerror');
+  assert(typeof wasmExports['malloc'] != 'undefined', 'missing Wasm export: malloc');
+  assert(typeof wasmExports['free'] != 'undefined', 'missing Wasm export: free');
   assert(typeof wasmExports['emscripten_stack_init'] != 'undefined', 'missing Wasm export: emscripten_stack_init');
   assert(typeof wasmExports['emscripten_stack_get_free'] != 'undefined', 'missing Wasm export: emscripten_stack_get_free');
   assert(typeof wasmExports['_emscripten_stack_restore'] != 'undefined', 'missing Wasm export: _emscripten_stack_restore');
@@ -5358,12 +5361,17 @@ function assignWasmExports(wasmExports) {
   _get_audio_samples_available = Module['_get_audio_samples_available'] = createExportWrapper('get_audio_samples_available', wasmExports['get_audio_samples_available'], 0);
   _fill_audio_buffer = Module['_fill_audio_buffer'] = createExportWrapper('fill_audio_buffer', wasmExports['fill_audio_buffer'], 1);
   _set_audio_muted = Module['_set_audio_muted'] = createExportWrapper('set_audio_muted', wasmExports['set_audio_muted'], 1);
+  _save_state = Module['_save_state'] = createExportWrapper('save_state', wasmExports['save_state'], 0);
+  _get_state_data = Module['_get_state_data'] = createExportWrapper('get_state_data', wasmExports['get_state_data'], 0);
+  _load_state = Module['_load_state'] = createExportWrapper('load_state', wasmExports['load_state'], 2);
   _load_rom_from_js = Module['_load_rom_from_js'] = createExportWrapper('load_rom_from_js', wasmExports['load_rom_from_js'], 1);
   _main = Module['_main'] = createExportWrapper('__main_argc_argv', wasmExports['__main_argc_argv'], 2);
   _fflush = createExportWrapper('fflush', wasmExports['fflush'], 1);
   _emscripten_stack_get_end = wasmExports['emscripten_stack_get_end'];
   _emscripten_stack_get_base = wasmExports['emscripten_stack_get_base'];
   _strerror = createExportWrapper('strerror', wasmExports['strerror'], 1);
+  _malloc = Module['_malloc'] = createExportWrapper('malloc', wasmExports['malloc'], 1);
+  _free = Module['_free'] = createExportWrapper('free', wasmExports['free'], 1);
   _emscripten_stack_init = wasmExports['emscripten_stack_init'];
   _emscripten_stack_get_free = wasmExports['emscripten_stack_get_free'];
   __emscripten_stack_restore = wasmExports['_emscripten_stack_restore'];

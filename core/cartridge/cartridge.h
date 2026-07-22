@@ -14,6 +14,10 @@ public:
     uint8_t  readCartridge(uint16_t address);
     void     writeCartridge(uint16_t address, uint8_t value);
 
+    // Save states: RAM externa + registros del MBC
+    void saveState(StateWriter& out) const;
+    void loadState(StateReader& in);
+
     const std::string& getTitle()         const { return Title; }
     uint8_t            getCartridgeType() const { return cartridge_type; }
     uint8_t            getCGBFlag()       const { return cgb_flag; }

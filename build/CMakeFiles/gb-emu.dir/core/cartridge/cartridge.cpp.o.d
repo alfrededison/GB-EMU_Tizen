@@ -684,6 +684,7 @@ CMakeFiles/gb-emu.dir/core/cartridge/cartridge.cpp.o: \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__filesystem/recursive_directory_iterator.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__filesystem/u8path.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/iostream \
+  /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/state/state.h \
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cartridge/IMBC/type_cartridge/RomOnly.h \
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cartridge/IMBC/type_cartridge/../IMBC.h \
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cartridge/IMBC/type_cartridge/MBC1.h \

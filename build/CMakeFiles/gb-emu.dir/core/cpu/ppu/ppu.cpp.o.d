@@ -685,4 +685,5 @@ CMakeFiles/gb-emu.dir/core/cpu/ppu/ppu.cpp.o: \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__filesystem/path_iterator.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__filesystem/recursive_directory_iterator.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__filesystem/u8path.h \
-  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/iostream
+  /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/iostream \
+  /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/state/state.h

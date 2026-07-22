@@ -697,6 +697,7 @@ CMakeFiles/gb-emu.dir/emc_main.cpp.o: \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__filesystem/path_iterator.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__filesystem/recursive_directory_iterator.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__filesystem/u8path.h \
+  /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/state/state.h \
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cpu/cpu.h \
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cpu/ppu/ppu.h \
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cpu/timer/timer.h \

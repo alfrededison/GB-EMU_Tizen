@@ -2075,3 +2075,25 @@ int cpu::LD_A_C(uint8_t opcode) {
     
     return 8; // 8 ciclos
 }
+// ============================================================
+// SAVE STATES
+// ============================================================
+void cpu::saveState(StateWriter& out) const {
+    out.write(PC);
+    out.write(SP);
+    out.write(IME);
+    out.write(IME_scheduled);
+    out.write(isHalted);
+    out.write(isStopped);
+    out.writeArray(r8);
+}
+
+void cpu::loadState(StateReader& in) {
+    PC            = in.read<uint16_t>();
+    SP            = in.read<uint16_t>();
+    IME           = in.read<bool>();
+    IME_scheduled = in.read<bool>();
+    isHalted      = in.read<bool>();
+    isStopped     = in.read<bool>();
+    in.readArray(r8);
+}

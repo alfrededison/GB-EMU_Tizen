@@ -685,4 +685,5 @@ CMakeFiles/gb-emu.dir/core/cpu/mmu/mmu.cpp.o: \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__filesystem/recursive_directory_iterator.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/__filesystem/u8path.h \
   /opt/homebrew/Cellar/emscripten/6.0.3/libexec/cache/sysroot/include/c++/v1/iostream \
+  /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/state/state.h \
   /Users/hieunguyen/code/personal/GB-EMU_Tizen/core/cpu/mmu/../APU/apu.h
