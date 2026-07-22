@@ -87,6 +87,16 @@ docker stop gbemu-tmp
 docker rm gbemu-tmp
 ```
 
+**macOS / Linux:**
+```bash
+docker build --platform linux/amd64 -t gbemu-tizen .
+docker create --platform linux/amd64 --name gbemu-tmp gbemu-tizen
+docker cp gbemu-tmp:/home/gbemu/GBEmu.wgt .
+docker rm gbemu-tmp
+```
+
+> **Apple Silicon note:** the `--platform linux/amd64` flag is required on M-series Macs — Tizen Studio only ships x86-64 binaries, so a native `arm64` image fails during the Tizen Studio install (`rosetta error: failed to open elf`). Building as `amd64` runs the whole image under Rosetta instead. On Intel Macs and Linux the flag is harmless and can be dropped.
+
 ---
 
 ## Using Your Own ROMs
