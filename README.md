@@ -96,6 +96,21 @@ docker rm gbemu-tmp
 
 > **Apple Silicon note:** the `--platform linux/amd64` flag is required on M-series Macs — Tizen Studio only ships x86-64 binaries, so a native `arm64` image fails during the Tizen Studio install (`rosetta error: failed to open elf`). Building as `amd64` runs the whole image under Rosetta instead. On Intel Macs and Linux the flag is harmless and can be dropped.
 
+### Desktop build (browser testing)
+
+The same page runs in a regular desktop browser — when it isn't running on Tizen it shows an **INSERT CARTRIDGE** button for loading a `.gb`/`.gbc` file, and the keyboard is mapped (arrows = D-pad, <kbd>Z</kbd>/<kbd>Enter</kbd> = A, <kbd>X</kbd> = B, <kbd>Shift</kbd> = SELECT/START, <kbd>Backspace</kbd> = game menu). With [Emscripten](https://emscripten.org/) installed locally:
+
+```bash
+emcmake cmake -DCMAKE_BUILD_TYPE=Release -S . -B build
+cmake --build build
+
+# Serve it (WASM won't load from file://)
+python3 -m http.server -d build 8080
+# then open http://localhost:8080/gb-emu.html
+```
+
+The `build/` directory is generated output and not tracked in git.
+
 ---
 
 ## Using Your Own ROMs
