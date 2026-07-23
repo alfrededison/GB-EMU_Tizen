@@ -6,7 +6,9 @@
     <title>GameBoy Emulator - WebAssembly</title>
     <style>
         body {
-            background-color: #202020;
+            /* Same color as the case so any letterboxing left by the
+               scale-to-fit is invisible - the case appears full screen. */
+            background-color: #c0c0c0;
             color: white;
             font-family: 'Courier New', Courier, monospace;
             display: flex;
@@ -23,18 +25,28 @@
                always fills the full screen height on any TV/display. */
             transform-origin: center center;
             background-color: #c0c0c0;
-            padding: 32px;
-            border-radius: 14px 14px 56px 14px;
-            box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
+            padding: 12px 24px;
             display: flex;
             flex-direction: column;
             align-items: center;
+        }
+        /* Screen flanked by two side panels (cartridge info left, control
+           hints right) instead of stacking them above/below - keeps the
+           case short so fitCaseToScreen can scale the LCD near full height. */
+        .main-row {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 16px;
+        }
+        .side-panel {
+            width: 190px;
+            flex: 0 0 auto;
         }
         .screen-border {
             background-color: #505050;
             padding: 28px 56px;
             border-radius: 14px 14px 42px 14px;
-            margin-bottom: 24px;
             box-shadow: inset 2px 2px 5px rgba(0,0,0,0.5);
             position: relative;
         }
@@ -112,16 +124,24 @@
         }
         
         .cartridge-slot {
-            margin-bottom: 15px;
             width: 100%;
             text-align: center;
         }
 
         .controls {
-            text-align: center;
+            text-align: left;
             font-size: 12px;
             color: #333;
-            margin-top: 10px;
+        }
+        .controls .hint-line {
+            margin: 4px 0;
+            white-space: nowrap;
+        }
+        .controls .hint-note {
+            margin-top: 12px;
+            font-size: 10px;
+            color: #555;
+            white-space: normal;
         }
         
         /* Debug Panel Styles */
@@ -314,10 +334,13 @@
 <body>
 
     <div class="gb-case">
-        <div class="cartridge-slot">
-            <label for="rom-upload" class="file-upload-btn" id="rom-upload-label">INSERT CARTRIDGE (.gb/.gbc)</label>
-            <input type="file" id="rom-upload" accept=".gb,.gbc" />
-            <div id="rom-name" style="font-size: 12px; color: #555;">No cartridge inserted</div>
+        <div class="main-row">
+        <div class="side-panel">
+            <div class="cartridge-slot">
+                <label for="rom-upload" class="file-upload-btn" id="rom-upload-label">INSERT CARTRIDGE (.gb/.gbc)</label>
+                <input type="file" id="rom-upload" accept=".gb,.gbc" />
+                <div id="rom-name" style="font-size: 12px; color: #555;">No cartridge inserted</div>
+            </div>
         </div>
 
         <div class="screen-border">
@@ -333,10 +356,18 @@
                 <div class="rom-select-hint">D-PAD/STICK = MOVE&nbsp;&nbsp;|&nbsp;&nbsp;OK/A = SELECT&nbsp;&nbsp;|&nbsp;&nbsp;BLUE = CLOSE</div>
             </div>
         </div>
-        
-        <div class="controls" id="controls-hint">
-            <p>D-PAD/STICK | OK/PAD-START=START | RED/PAD-A=A | BACK/PAD-B=B | YELLOW/PAD-SEL=SEL | BLUE=MENU</p>
+
+        <div class="side-panel">
+            <div class="controls" id="controls-hint">
+                <div class="hint-line">D-PAD/STICK = MOVE</div>
+                <div class="hint-line">OK / PAD-START = START</div>
+                <div class="hint-line">RED / PAD-A = A</div>
+                <div class="hint-line">BACK / PAD-B = B</div>
+                <div class="hint-line">YELLOW / PAD-SEL = SELECT</div>
+                <div class="hint-line">BLUE = MENU</div>
+            </div>
         </div>
+        </div><!-- /main-row -->
 
         <!-- CONTROLES TÁCTILES — solo visibles en mobile -->
         <div class="touch-controls">
