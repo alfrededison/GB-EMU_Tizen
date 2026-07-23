@@ -358,7 +358,7 @@
             <div class="rom-select-overlay" id="game-menu-overlay">
                 <div class="rom-select-title">GAME MENU</div>
                 <div id="game-menu-list"></div>
-                <div class="rom-select-hint">D-PAD/STICK = MOVE&nbsp;&nbsp;|&nbsp;&nbsp;OK/A = SELECT&nbsp;&nbsp;|&nbsp;&nbsp;BLUE = CLOSE</div>
+                <div class="rom-select-hint">D-PAD/STICK = MOVE&nbsp;&nbsp;|&nbsp;&nbsp;OK/A = SELECT&nbsp;&nbsp;|&nbsp;&nbsp;BACK = CLOSE</div>
             </div>
             <div class="rom-select-overlay" id="confirm-overlay">
                 <div class="rom-select-title" id="confirm-title">CONFIRM</div>
@@ -371,11 +371,12 @@
         <div class="side-panel">
             <div class="controls" id="controls-hint">
                 <div class="hint-line">D-PAD/STICK = MOVE</div>
-                <div class="hint-line">OK / PAD-START = START</div>
-                <div class="hint-line">RED / PAD-A = A</div>
-                <div class="hint-line">BACK / PAD-B = B</div>
-                <div class="hint-line">YELLOW / PAD-SEL = SELECT</div>
-                <div class="hint-line">BLUE = MENU</div>
+                <div class="hint-line">OK / PAD-A = A</div>
+                <div class="hint-line">PLAY-PAUSE / PAD-B = B</div>
+                <div class="hint-line">CH+ / PAD-SEL = SELECT</div>
+                <div class="hint-line">CH- / PAD-START = START</div>
+                <div class="hint-line">BACK = MENU</div>
+                <div class="hint-note">REMOTE B/SEL/START = TAP ONLY (NO HOLD). USE A GAMEPAD FOR GAMES THAT NEED HELD BUTTONS.</div>
             </div>
         </div>
         </div><!-- /main-row -->
@@ -442,10 +443,12 @@
 
     if (isTizen && tizen.tvinputdevice) {
         // The D-pad (arrow keys) and OK/Enter work out of the box.
-        // Back and the colored remote buttons need to be registered
+        // The media/channel hard keys and Back need to be registered
         // explicitly, otherwise the platform intercepts them (Back in
-        // particular would otherwise close/exit the app).
-        ['Back', 'ColorF0Red', 'ColorF1Green', 'ColorF2Yellow', 'ColorF3Blue'].forEach(key => {
+        // particular would otherwise close/exit the app, CH+/- would
+        // change channel). MediaPlay/MediaPause cover remotes that have
+        // separate play and pause buttons instead of a combined one.
+        ['Back', 'MediaPlayPause', 'MediaPlay', 'MediaPause', 'ChannelUp', 'ChannelDown'].forEach(key => {
             try { tizen.tvinputdevice.registerKey(key); } catch (e) { console.warn('[TIZEN] registerKey failed for', key, e); }
         });
     }
@@ -1410,24 +1413,77 @@
     // ============================================================
     // 5. INPUT DE TECLADO (+ mando a distancia Tizen)
     // ============================================================
+    // Enter is the A button on every platform: on the TV it's the OK key
+    // (the most comfortable key on the remote, and A is pressed constantly),
+    // and keeping desktop identical avoids per-platform surprises. START
+    // lives on Right Shift for desktop (SELECT on Left Shift).
     const KEY_MAP = {
         'ArrowRight':0, 'ArrowLeft':1, 'ArrowUp':2, 'ArrowDown':3,
-        'KeyZ':4, 'KeyX':5, 'ShiftLeft':6, 'Enter':7
+        'KeyZ':4, 'KeyX':5, 'ShiftLeft':6, 'ShiftRight':7, 'Enter':4
     };
 
-    // Physical TV remotes don't have Z/X/Shift keys. The D-pad and OK
-    // (which reports as 'Enter', already mapped to START above) work out
-    // of the box; Back and the colored buttons need their own mapping.
-    // Adjust to taste - these are just sensible defaults.
+    // TV remotes only have a handful of hard keys, so the frequently-used
+    // GB buttons go on the easiest-to-reach ones. The colored (RGYB) keys
+    // are avoided on purpose: on current Samsung remotes they're virtual
+    // (buried in an on-screen panel), not physical buttons.
     const TIZEN_KEYCODE_MAP = {
-        10009: 5,   // Back          -> B
-        403:   4,   // Red (F0)      -> A
-        405:   6,   // Yellow (F2)   -> SELECT
+        10252: 5,   // Play/Pause    -> B
+        415:   5,   // Play          -> B (remotes with separate play/pause)
+        19:    5,   // Pause         -> B (remotes with separate play/pause)
+        427:   6,   // Channel Up    -> SELECT
+        428:   7,   // Channel Down  -> START
     };
 
     // Not a GB button - opens/closes the game menu (Resume/Change ROM/Exit).
-    // 406 = Blue (F3) on the TV remote, 8 = Backspace for desktop testing.
-    const MENU_TOGGLE_KEYCODES = new Set([406, 8]);
+    // 10009 = Back on the TV remote, 8 = Backspace for desktop testing.
+    const MENU_TOGGLE_KEYCODES = new Set([10009, 8]);
+
+    // The remote's media/channel keys don't behave like held keyboard keys:
+    // a physical press arrives as an instantaneous keydown+keyup pair (or
+    // the keyup is unreliable). Games poll the joypad register once per
+    // frame, so a ~0ms press falls between polls and is silently dropped -
+    // that's why these keys felt laggy in-game while the JS menus (which
+    // react to the keydown event itself) were instant. Fix: ignore keyup
+    // for these keys and synthesize the press instead - press on keydown,
+    // auto-release PULSE ms later so every click spans several frames. A
+    // repeated click mid-pulse releases for GAP ms first, so the game sees
+    // a fresh edge even when mashing faster than the pulse length.
+    const REMOTE_PULSE_MS  = 120; // ~7 frames held down
+    const REMOTE_GAP_MS    = 40;  // ~2 frames released between rapid clicks
+    const REMOTE_DEDUP_MS  = 30;  // two codes for one click (e.g. 415+10252)
+    const remotePulse = {};       // btn id -> {phase: 'down'|'gap', timer, t}
+
+    // Release that bypasses pressBtn's overlay routing: if an overlay
+    // opened mid-pulse it would swallow the delayed release and leave the
+    // button stuck down in the joypad register. Releasing directly is
+    // always safe - overlays ignore releases anyway.
+    function releaseBtnDirect(id) {
+        if (!buttonState[id]) return;
+        buttonState[id] = false;
+        if (Module._set_button) Module._set_button(id, 0);
+        updateDebugUI();
+    }
+
+    function remoteClick(id) {
+        const p = remotePulse[id];
+        if (p && p.phase === 'down' && performance.now() - p.t < REMOTE_DEDUP_MS) {
+            return; // duplicate keycode for the same physical click
+        }
+        if (p) clearTimeout(p.timer);
+        if (p && p.phase === 'down') {
+            releaseBtnDirect(id);
+            remotePulse[id] = { phase: 'gap', timer: setTimeout(() => {
+                delete remotePulse[id];
+                remoteClick(id);
+            }, REMOTE_GAP_MS) };
+            return;
+        }
+        pressBtn(id, true);
+        remotePulse[id] = { phase: 'down', t: performance.now(), timer: setTimeout(() => {
+            delete remotePulse[id];
+            releaseBtnDirect(id);
+        }, REMOTE_PULSE_MS) };
+    }
 
     function setupKeyboard() {
         const handler = (e, isDown) => {
@@ -1441,7 +1497,7 @@
             if (btn !== undefined) { e.preventDefault(); pressBtn(btn, isDown); return; }
 
             const tizenBtn = TIZEN_KEYCODE_MAP[e.keyCode];
-            if (tizenBtn !== undefined) { e.preventDefault(); pressBtn(tizenBtn, isDown); }
+            if (tizenBtn !== undefined) { e.preventDefault(); if (isDown) remoteClick(tizenBtn); }
         };
         document.addEventListener('keydown', e => handler(e, true));
         document.addEventListener('keyup',   e => handler(e, false));

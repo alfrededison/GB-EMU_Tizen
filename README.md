@@ -148,7 +148,7 @@ Open the **in-game menu** at any time:
 
 | Input | Action |
 |-------|--------|
-| **BLUE** (remote) | Open/close game menu |
+| **BACK** (remote) | Open/close game menu |
 | **SELECT + START together** (gamepad) | Open/close game menu |
 
 From the menu you can pick **Change ROM** to re-scan USB + saved ROMs and load a different one (the bundled example is always offered too), **Download ROMs (Wi-Fi)** to fetch new ROMs from your PC, **Set ROM Server** to point the app at your PC (stored on the TV), or **Exit App** to close GBEmu entirely — see [Controls](#controls) below.
@@ -163,11 +163,15 @@ From the menu you can pick **Change ROM** to re-scan USB + saved ROMs and load a
 | Button | Action |
 |--------|--------|
 | **Arrow Keys** | D-Pad (movement) |
-| **OK** | START |
-| **RED** | A |
-| **YELLOW** | SELECT |
-| **BACK** | B |
-| **BLUE** | Open/close game menu (Resume / Change ROM / Download ROMs / Set ROM Server / Exit App) |
+| **OK** | A |
+| **Play/Pause** | B |
+| **CH +** | SELECT |
+| **CH −** | START |
+| **BACK** | Open/close game menu (Resume / Change ROM / Download ROMs / Set ROM Server / Exit App) |
+
+Only hard keys are used — the colored (RGYB) buttons are virtual on current Samsung remotes, so they're deliberately avoided.
+
+**Limitation — remote B/SELECT/START are tap-only.** On Samsung remotes, every key except the D-pad and OK is delivered as an instantaneous click with no reliable key-release event, so the app synthesizes a short (~120 ms) button press per click. Tapping works perfectly, but these buttons **cannot be held down** — games that require holding B (e.g. holding B to run in platformers) need a Bluetooth gamepad, where all buttons support true press-and-hold.
 
 ### Controller
 | Button | Action |
